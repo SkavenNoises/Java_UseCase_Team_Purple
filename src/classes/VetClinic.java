@@ -1,38 +1,68 @@
 package classes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class VetClinic {
 
-        Animal animal;
-        private int year = 2020; //current Date met.
-        private ArrayList<String> sickAnimalList = new ArrayList<String>();
-        private ArrayList<String> specialCare = new ArrayList<String>();
-        int totalSickAnimal;
-        int totalSpecialCare;
+    private ArrayList<Animal> sickAnimalList = new ArrayList<>();
+    private ArrayList<Animal> specialCare = new ArrayList<>();
 
-    public VetClinic(Animal animal, int year, int totalSickAnimal, int totalSpecialCare, HashMap<String, Integer> sickAnimalsIndex) {
-        this.animal = animal;
-        this.year = year;
-        this.totalSickAnimal = totalSickAnimal;
-        this.totalSpecialCare = totalSpecialCare;
-        this.sickAnimalsIndex = sickAnimalsIndex;
+
+    //SickAnimal Size/Add/Remove/List
+
+    public int getAmountOfSickAnimal() {
+        return sickAnimalList.size();
     }
 
-    public int amountOfSickAnimal() {
-            return sickAnimalList.size();
-        }
-
-        public HashMap<String, Integer> sickAnimalsIndex = new HashMap<String, Integer>(); {
-            return sickAnimalsIndex;
-
+    public void addSickAnimalList(Animal animal){
+        this.sickAnimalList.add(animal);
     }
-        public int amountOfSpecialCare() {
-            return specialCare.size();
 
-        }
-
+    public void removeSickAnimal(Animal animal){
+        this.sickAnimalList.remove(animal);
     }
+
+    public ArrayList<Animal> getSickAnimalList() {
+        return sickAnimalList;
+    }
+
+    //SpecialCare Size/Add/Remove/List
+
+    public int getAmountOfSpecialCare() {
+        return specialCare.size();
+    }
+
+    public void addSpecialCare(Animal animal){
+        this.specialCare.add(animal);
+    }
+
+    public void removeSpecialCare(Animal animal){
+        this.sickAnimalList.remove(animal);
+    }
+
+    public ArrayList<Animal> getSpecialCare() {
+        return specialCare;
+    }
+
+    //Hashmap for How many times which species?
+
+    public HashMap<Animal.AnimalSpecies, Integer> getSickAnimalsIndex() {
+        HashMap<Animal.AnimalSpecies, Integer> index = new HashMap<>();
+        sickAnimalList.forEach(animal -> {
+            int count = index.getOrDefault(animal.getAnimalSpecies(), 0) + 1;
+            index.put(animal.getAnimalSpecies(), count);
+        });
+        return index;
+    }
+
+    // Print
+
+    @Override
+    public String toString() {
+        return "VetClinic{" +
+                "sickAnimalList=" + sickAnimalList.size() +
+                ", specialCare=" + specialCare.size() +
+                '}';
+    }}
 
 
