@@ -2,6 +2,7 @@ package classes;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Animal {
 
@@ -119,5 +120,31 @@ public class Animal {
 
     public void setAnimalSpecies(AnimalSpecies animalSpecies) {
         this.animalSpecies = animalSpecies;
+    }
+
+    static int totalFoodEaten(Animal animal) {
+        int totalFood = 0;
+        int counter = 0;
+        for(Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : animal.getFoodGivenAt().entrySet()) {
+            counter++;
+            for(Map.Entry<Resource, Integer> entryValue : entry.getValue().entrySet()) {
+                totalFood += entryValue.getValue();
+            }
+        }
+        return totalFood;
+
+    }
+
+    static int totalMedicineTaken(Animal animal) {
+        int totalMedication = 0;
+        int counter = 0;
+        for(Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : animal.getMedsGivenAt().entrySet()) {
+            counter++;
+            for(Map.Entry<Resource, Integer> entryValue : entry.getValue().entrySet()) {
+                totalMedication += entryValue.getValue();
+            }
+        }
+        return totalMedication;
+
     }
 }
