@@ -1,16 +1,16 @@
 package classes;
 
+import exceptions.AnimalNotFoundException;
+import exceptions.AnimalPurchaseException;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ZooManager {
-    private HashMap<Integer, ZooEmployee> employeeHashMap;
-
-    public ZooManager() {
-        employeeHashMap = new HashMap<>();
-    }
+    private HashMap<Integer, ZooEmployee> employeeHashMap = new HashMap<>();;
 
     public void hireEmployee(ZooEmployee zooEmployee) {
         employeeHashMap.put(zooEmployee.getEmployeeID(), zooEmployee);
@@ -18,18 +18,53 @@ public class ZooManager {
     }
 
     public void fireEmployee(ZooEmployee zooEmployee) {
-        zooEmployee.setActiveEmployee(false);
-        employeeHashMap.remove(zooEmployee.getEmployeeID());
+        if (this.employeeHashMap.containsKey(zooEmployee.getEmployeeID())) {
+            zooEmployee.setActiveEmployee(false);
+            employeeHashMap.remove(zooEmployee.getEmployeeID());
+        } else {
+            System.out.println("No employee found");
+        }
     }
 
-    // TODO - Purchase Animals
-    public void purchaseAnimal() {
+    public void purchaseAnimal(Animal animal) throws AnimalPurchaseException {
+        // Finding out which enclosure contains the correct species
+        boolean animalFound = false;
+        for (ZooEmployee zooEmployee : employeeHashMap.values()) {
+            if (zooEmployee.getEmployeeEnclosures().get(0).getEnclosureSpecies().equals(animal.getAnimalSpecies())) {
+                zooEmployee.getEmployeeEnclosures().get(0).getAnimalListInEnclosure().add(animal);
+                animalFound = true;
+            }
+        }
 
+        if (!animalFound) {
+            throw new AnimalPurchaseException("Cannot purchase animal");
+        }
     }
 
-    // TODO - Get animal's health
-    public void getAnimalHealth() {
+    public String getAnimalHealth(int animalID) throws AnimalNotFoundException {
+        // Finding the correct enclosure that contains that specific animal and returning whether or not the animal is healthy
+        String healthStatus = "";
 
+        for (ZooEmployee zooEmployee : employeeHashMap.values()) {
+            ArrayList<Animal> animalArrayList = zooEmployee.getEmployeeEnclosures().get(0).getAnimalListInEnclosure();
+
+            for (Animal animal : animalArrayList) {
+                if (animal.getAnimalID() == animalID) {
+                    if (animal.isHealthy()) {
+                        healthStatus = "Healthy";
+                    } else {
+                        healthStatus = "Sick";
+                    }
+                }
+            }
+        }
+
+        // Ensuring that the animal has been found
+        if (healthStatus.isEmpty()) {
+            throw new AnimalNotFoundException("Cannot locate animal");
+        } else {
+            return healthStatus;
+        }
     }
 
     // TODO - Print to file a report
@@ -62,7 +97,7 @@ public class ZooManager {
                     employeeStatus = "Fired";
                 }
 
-                stringBuilder.append("\n").append(String.format("\n%3s %20s %20s", zooEmployee.getEmployeeID(), employeeStatus, /*TODO add enclosure data*/));
+                stringBuilder.append("\n").append(String.format("\n%3s %20s %20s", zooEmployee.getEmployeeID(), employeeStatus, zooEmployee.getEmployeeEnclosures().get(0).getEnclosureID()));
             }
 
             // TODO - Add other elements to add to the report file

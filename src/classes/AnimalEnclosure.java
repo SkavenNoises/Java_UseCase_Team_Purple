@@ -11,17 +11,23 @@ public class AnimalEnclosure {
     private boolean isClean;
     private boolean isEnriched;
     private boolean needsModifications;
+    private Animal.AnimalSpecies enclosureSpecies;
 
     static HashMap<Integer, AnimalEnclosure> enclosureHash = new HashMap<>();
 
-    public AnimalEnclosure(String enclosureName, boolean isClean, boolean isEnriched, boolean needsModifications) {
+    public AnimalEnclosure(String enclosureName, boolean isClean, boolean isEnriched, boolean needsModifications, Animal.AnimalSpecies animalSpecies) {
         enclosureStaticID++;
         this.enclosureID = enclosureStaticID;
         this.enclosureName = enclosureName;
         this.isClean = isClean;
         this.isEnriched = isEnriched;
         this.needsModifications = needsModifications;
+        this.enclosureSpecies = animalSpecies;
         enclosureHash.put(this.enclosureID, this);
+    }
+
+    public Animal.AnimalSpecies getEnclosureSpecies() {
+        return enclosureSpecies;
     }
 
     public int getEnclosureID() {
