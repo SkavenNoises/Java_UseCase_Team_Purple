@@ -4,14 +4,17 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class Animal {
+
+
 
     private int animalID;
     private static int animalStaticID = 0;
     private String animalName;
     private boolean isHealthy;
     private Resource food;
-    private double quantityOfFoodEats;
+    private int quantityOfFoodEats;
     private Resource medication;
     private int quantityOfMedsRequired;
 
@@ -29,7 +32,7 @@ public class Animal {
 
     static HashMap<Integer, Animal> animalsHash = new HashMap<>();
 
-    public Animal(String animalName, boolean isHealthy, Resource food, double quantityOfFoodEats, Resource medication, int quantityOfMedsRequired, classes.Animal.AnimalSpecies animalSpecies) {
+    public Animal(String animalName, boolean isHealthy, Resource food, int quantityOfFoodEats, Resource medication, int quantityOfMedsRequired, classes.Animal.AnimalSpecies animalSpecies) {
         animalStaticID++;
         this.animalID = animalStaticID;
         this.animalName = animalName;
@@ -40,6 +43,7 @@ public class Animal {
         this.quantityOfMedsRequired = quantityOfMedsRequired;
         this.animalSpecies = animalSpecies;
         animalsHash.put(this.animalID, this);
+
     }
 
     public int getAnimalID() {
@@ -74,11 +78,11 @@ public class Animal {
         this.food = food;
     }
 
-    public double getQuantityOfFoodEats() {
+    public int getQuantityOfFoodEats() {
         return quantityOfFoodEats;
     }
 
-    public void setQuantityOfFoodEats(double quantityOfFoodEats) {
+    public void setQuantityOfFoodEats(int quantityOfFoodEats) {
         this.quantityOfFoodEats = quantityOfFoodEats;
     }
 
@@ -120,6 +124,32 @@ public class Animal {
 
     public void setAnimalSpecies(AnimalSpecies animalSpecies) {
         this.animalSpecies = animalSpecies;
+    }
+
+    public static void recordFoodGivenAt(Animal animal) {
+        //Gets the time when the method is called;
+        LocalDateTime now = LocalDateTime.now();
+
+        HashMap<Resource, Integer> quantityResourceGiven = new HashMap<>();
+
+        quantityResourceGiven.put(animal.getFood(), animal.getQuantityOfFoodEats());
+
+        animal.getFoodGivenAt().put(now, quantityResourceGiven);
+        animal.setFoodGivenAt(animal.getFoodGivenAt());
+        Resource.subtractResource(animal.getFood(), animal.getQuantityOfFoodEats());
+    }
+
+    public static void recordMedsGivenAt(Animal animal) {
+        //Gets the time when the method is called;
+        LocalDateTime now = LocalDateTime.now();
+
+        HashMap<Resource, Integer> quantityResourceGiven = new HashMap<>();
+
+        quantityResourceGiven.put(animal.getMedication(), animal.getQuantityOfMedsRequired());
+
+        animal.getMedsGivenAt().put(now, quantityResourceGiven);
+        animal.setMedsGivenAt(animal.getMedsGivenAt());
+        Resource.subtractResource(animal.getMedication(), animal.getQuantityOfMedsRequired());
     }
 
     public int totalFoodEaten() {
