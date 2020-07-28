@@ -37,7 +37,7 @@ public class VetClinic {
     }
 
     public void removeSpecialCare(Animal animal){
-        this.sickAnimalList.remove(animal);
+        this.specialCare.remove(animal);
     }
 
     public ArrayList<Animal> getSpecialCare() {
