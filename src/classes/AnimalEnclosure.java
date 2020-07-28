@@ -2,6 +2,7 @@ package classes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class AnimalEnclosure {
     private static int enclosureStaticID = 0;
@@ -89,6 +90,30 @@ public class AnimalEnclosure {
     public void addAnimal(int animalId) {
         this.getAnimalListInEnclosure().add(Animal.animalsHash.get(animalId));
         System.out.println("Animal Added");
+    }
+
+    public static void printAnimalEnclosureRecords() {
+        for(Map.Entry<Integer, AnimalEnclosure> entry : enclosureHash.entrySet()) {
+            System.out.printf("%n%nEnclosureID: %d; Name: %s; iClean: %s; Enriched: %s; Modifications Necessary: %s; Species: %s",
+                    entry.getValue().getEnclosureID(), entry.getValue().getEnclosureName(),
+                    (entry.getValue().isClean ? "Yes" : "No"),
+                    (entry.getValue().isEnriched ? "Yes" : "No"),
+                    (entry.getValue().isNeedsModifications() ? "Yes" : "No"),
+                    entry.getValue().getEnclosureSpecies());
+
+            System.out.printf("%n%-10s %-32s %-15s %-20s %-10s %-20s %-10s %-32s",
+                    "AnimalID", "AnimalName", "isHealthy", "Food", "Quantity", "Medicine", "Quantity", "Species");
+            for(int i = 0; i <entry.getValue().getAnimalListInEnclosure().size(); i++) {
+                Animal animal  = entry.getValue().getAnimalListInEnclosure().get(i);
+                System.out.printf("%n%-10d %-32s %-15s %-20s %-10d %-20s %-10d %-32s",
+                        animal.getAnimalID(), animal.getAnimalName(),
+                        animal.isHealthy() ? "Healthy" : "Not Healthy",
+                        animal.getFood().getResourceName(), animal.getQuantityOfFoodEats(),
+                        animal.getMedication().getResourceName(), animal.getQuantityOfMedsRequired(),
+                        animal.getAnimalSpecies());
+            }
+
+        }
     }
 
 }
