@@ -16,7 +16,7 @@ public class ZooEmployee {
     }
 
     // TODO - Administer medication to animal
-    public void administerMedication(Animal animal) {
+    public void sendAnimalToVet(Animal animal) {
 
     }
 
