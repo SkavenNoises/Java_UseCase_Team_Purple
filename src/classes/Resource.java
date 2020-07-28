@@ -69,11 +69,11 @@ public class Resource {
         this.quantityResource = quantityResource;
     }
 
-    public classes.Resource.ResourceType getResourceType() {
+    public Resource.ResourceType getResourceType() {
         return resourceType;
     }
 
-    public void setResourceType(classes.Resource.ResourceType resourceType) {
+    public void setResourceType(Resource.ResourceType resourceType) {
         this.resourceType = resourceType;
     }
 
@@ -81,8 +81,9 @@ public class Resource {
         resource.setQuantityResource(resource.getQuantityResource() + quantity);
     }
 
-    public void subtractResource(Resource resource, int quantity) {
+    public static void subtractResource(Resource resource, int quantity) {
         resource.setQuantityResource(resource.getQuantityResource() - quantity);
+        System.out.println(resource.getQuantityResource());
     }
 
 }
