@@ -124,9 +124,7 @@ public class Animal {
 
     public int totalFoodEaten() {
         int totalFood = 0;
-        int counter = 0;
         for(Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : this.getFoodGivenAt().entrySet()) {
-            counter++;
             for(Map.Entry<Resource, Integer> entryValue : entry.getValue().entrySet()) {
                 totalFood += entryValue.getValue();
             }
@@ -137,9 +135,7 @@ public class Animal {
 
     public int totalMedicineTaken() {
         int totalMedication = 0;
-        int counter = 0;
         for(Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : this.getMedsGivenAt().entrySet()) {
-            counter++;
             for(Map.Entry<Resource, Integer> entryValue : entry.getValue().entrySet()) {
                 totalMedication += entryValue.getValue();
             }
@@ -147,4 +143,5 @@ public class Animal {
         return totalMedication;
 
     }
+
 }
