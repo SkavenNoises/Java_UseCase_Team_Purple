@@ -122,10 +122,10 @@ public class Animal {
         this.animalSpecies = animalSpecies;
     }
 
-    static int totalFoodEaten(Animal animal) {
+    public int totalFoodEaten() {
         int totalFood = 0;
         int counter = 0;
-        for(Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : animal.getFoodGivenAt().entrySet()) {
+        for(Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : this.getFoodGivenAt().entrySet()) {
             counter++;
             for(Map.Entry<Resource, Integer> entryValue : entry.getValue().entrySet()) {
                 totalFood += entryValue.getValue();
@@ -135,10 +135,10 @@ public class Animal {
 
     }
 
-    static int totalMedicineTaken(Animal animal) {
+    public int totalMedicineTaken() {
         int totalMedication = 0;
         int counter = 0;
-        for(Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : animal.getMedsGivenAt().entrySet()) {
+        for(Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : this.getMedsGivenAt().entrySet()) {
             counter++;
             for(Map.Entry<Resource, Integer> entryValue : entry.getValue().entrySet()) {
                 totalMedication += entryValue.getValue();

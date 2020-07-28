@@ -80,23 +80,25 @@ public class Resource {
         this.resourceType = resourceType;
     }
 
-    static void subtractResource(Resource resource) {
+    public void subtractResource(Resource resource) {
         int resourceQuantity = resource.getQuantityResource();
         if(resource.getResourceType() == ResourceType.Food) {
             for(Map.Entry<Integer, Animal> entry : animalsHash.entrySet()) {
-                resourceQuantity -= totalFoodEaten(entry.getValue());
+                resourceQuantity -= entry.getValue().totalFoodEaten();
             }
         } else if(resource.getResourceType() == ResourceType.Meds) {
             for(Map.Entry<Integer, Animal> entry : animalsHash.entrySet()) {
-                resourceQuantity -= totalMedicineTaken(entry.getValue());
+                resourceQuantity -= entry.getValue().totalMedicineTaken();
             }
         }
         resource.setQuantityResource(resourceQuantity);
+
     }
 
-    static void addResource(Resource resource, int quantity) {
+    public void addResource(Resource resource, int quantity) {
         int resourceQuantity = resource.getQuantityResource() + quantity;
         resource.setQuantityResource(resourceQuantity);
+        System.out.printf("The new quantity of the resource, %s is %d. %n", resource.getResourceName(), resource.getQuantityResource());
     }
 
 }
