@@ -1,9 +1,6 @@
 package classes;
 
 import java.util.HashMap;
-import java.util.Map;
-
-import static classes.Animal.*;
 
 public class Resource {
     private int resourceID;
@@ -80,25 +77,12 @@ public class Resource {
         this.resourceType = resourceType;
     }
 
-    public void subtractResource(Resource resource) {
-        int resourceQuantity = resource.getQuantityResource();
-        if(resource.getResourceType() == ResourceType.Food) {
-            for(Map.Entry<Integer, Animal> entry : animalsHash.entrySet()) {
-                resourceQuantity -= entry.getValue().totalFoodEaten();
-            }
-        } else if(resource.getResourceType() == ResourceType.Meds) {
-            for(Map.Entry<Integer, Animal> entry : animalsHash.entrySet()) {
-                resourceQuantity -= entry.getValue().totalMedicineTaken();
-            }
-        }
-        resource.setQuantityResource(resourceQuantity);
-
+    public void addResource(Resource resource, int quantity) {
+        resource.setQuantityResource(resource.getQuantityResource() + quantity);
     }
 
-    public void addResource(Resource resource, int quantity) {
-        int resourceQuantity = resource.getQuantityResource() + quantity;
-        resource.setQuantityResource(resourceQuantity);
-        System.out.printf("The new quantity of the resource, %s is %d. %n", resource.getResourceName(), resource.getQuantityResource());
+    public void subtractResource(Resource resource, int quantity) {
+        resource.setQuantityResource(resource.getQuantityResource() - quantity);
     }
 
 }
