@@ -1,11 +1,13 @@
 import classes.*;
 import exceptions.AnimalNotFoundException;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Zoo {
-
     public static void main(String[] args) {
         // Zoo objects
         ZooManager zooManager = new ZooManager();
@@ -151,7 +153,7 @@ public class Zoo {
 
                             break;
 
-                        case 11: // TODO list resources -kieran
+                        case 11: // List all resources
                             // Finding all the resources for all the animals across all the enclosures
                             ArrayList<Resource> resourceArrayList = new ArrayList<>();
                             for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
@@ -176,8 +178,119 @@ public class Zoo {
 
                             break;
 
-                        case 12: // TODO PrintReport -kieran
-                            zooManager.printReport();
+                        case 12:
+                            try {
+                                // Creating the text file to store the report in
+                                File reportFile = new File("zoo_report.txt");
+                                if (reportFile.createNewFile()) {
+                                    System.out.println("Creating report...");
+
+                                } else if (reportFile.exists()) {
+                                    System.out.println("Creating report...");
+
+                                } else {
+                                    throw new IOException();
+                                }
+
+                                // Building string before adding it to the file
+                                StringBuilder stringBuilder = new StringBuilder();
+                                stringBuilder.append(String.format("%25s", "Zoo Report")).append("\n");
+                                stringBuilder.append("-".repeat(45)).append("\n\n");
+
+                                // Employee List
+                                stringBuilder.append("Employees:").append("\n");
+                                stringBuilder.append("-".repeat(45)).append("\n");
+                                stringBuilder.append(String.format("%3s %20s %20s", "ID", "Employed", "Enclosure")).append("\n");
+                                stringBuilder.append("-".repeat(45)).append("\n");
+
+                                for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
+                                    String employmentStatus;
+                                    if (zooEmployee.isActiveEmployee()) {
+                                        employmentStatus = "Hired";
+                                    } else {
+                                        employmentStatus = "Fired";
+                                    }
+
+                                    stringBuilder.append(String.format("%3s %20s %20s", zooEmployee.getEmployeeID(), employmentStatus, zooEmployee.getEmployeeEnclosures().get(0).getEnclosureName())).append("\n");
+                                }
+
+                                // Creating a list of all the animals
+                                ArrayList<Animal> animalReportArrayList = new ArrayList<>();
+                                for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
+                                    for (AnimalEnclosure animalEnclosure : zooEmployee.getEmployeeEnclosures()) {
+                                        animalReportArrayList.addAll(animalEnclosure.getAnimalListInEnclosure());
+                                    }
+                                }
+
+                                // Adding it to the report stringBuilder
+                                stringBuilder.append("\n\n").append("Animal List:").append("\n");
+                                String animalListHeader = String.format("%3s %20s %20s %20s %20s %20s %20s %20s", "ID", "Name", "Species", "Health", "Food", "perServing", "Meds", "perServing");
+                                stringBuilder.append(animalListHeader).append("\n");
+                                stringBuilder.append("-".repeat(animalListHeader.length())).append("\n");
+
+                                for (Animal animal : animalReportArrayList) {
+                                    // Determining the status of the animals health in a human readable way
+                                    String healthStatus;
+                                    if (animal.isHealthy()) {
+                                        healthStatus = "Healthy";
+                                    } else {
+                                        healthStatus = "Sick";
+                                    }
+
+                                    stringBuilder.append(String.format("%3s %20s %20s %20s %20s %20s %20s %20s", animal.getAnimalID(), animal.getAnimalName(), animal.getAnimalSpecies(), healthStatus, animal.getFood().getResourceName(), animal.getQuantityOfFoodEats(), animal.getMedication().getResourceName(), animal.getQuantityOfMedsRequired())).append("\n");
+                                }
+
+                                // Listing all of the current resources
+                                ArrayList<Resource> resourceReportArrayList = new ArrayList<>();
+                                for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
+                                    for (AnimalEnclosure animalEnclosure : zooEmployee.getEmployeeEnclosures()) {
+                                        for (Animal animal : animalEnclosure.getAnimalListInEnclosure()) {
+                                            resourceReportArrayList.add(animal.getFood());
+                                            resourceReportArrayList.add(animal.getMedication());
+                                        }
+                                    }
+                                }
+
+                                // Writing the resources to a report format
+                                String resourceReportHeader = String.format("%3s %20s %20s %20s %20s", "ID", "Name", "Quantity", "Supplier", "Price");
+                                stringBuilder.append("\n\n").append("Resources:").append("\n");
+                                stringBuilder.append(resourceReportHeader).append("\n");
+                                stringBuilder.append("-".repeat(resourceReportHeader.length())).append("\n");
+
+                                for (Resource resource : resourceReportArrayList) {
+                                    stringBuilder.append(String.format("%3s %20s %20s %20s %20s", resource.getResourceID(), resource.getResourceName(), resource.getQuantityResource(), resource.getCompanyName(), "€" + resource.getResourcePrice())).append("\n");
+                                }
+
+                                // Writing the vet clinic animals to the report
+                                String vetClinicStandardHeader = String.format("%3s %20s %20s", "ID", "Name", "Species");
+                                stringBuilder.append("\n\n").append("Vet Clinic:").append("\n");
+                                stringBuilder.append(vetClinicStandardHeader).append("\n");
+                                stringBuilder.append("-".repeat(vetClinicStandardHeader.length())).append("\n");
+
+                                for (Animal animal : vetClinic.getSickAnimalList()) {
+                                    stringBuilder.append(String.format("%3s %20s %20s", animal.getAnimalID(), animal.getAnimalName(), animal.getAnimalSpecies())).append("\n");
+                                }
+
+                                // Writing the vet clinic special ward patients to the report
+                                String vetClinicIntensiveHeader = String.format("%3s %20s %20s", "ID", "Name", "Species");
+                                stringBuilder.append("\n\n").append("Vet Clinic - Special Care:").append("\n");
+                                stringBuilder.append(vetClinicIntensiveHeader).append("\n");
+                                stringBuilder.append("-".repeat(vetClinicStandardHeader.length())).append("\n");
+
+                                for (Animal animal : vetClinic.getSickAnimalList()) {
+                                    stringBuilder.append(String.format("%3s %20s %20s", animal.getAnimalID(), animal.getAnimalName(), animal.getAnimalSpecies())).append("\n");
+                                }
+
+                                // Writing report to the text file
+                                FileWriter writer = new FileWriter(reportFile);
+                                writer.write(stringBuilder.toString());
+                                writer.close();
+                                System.out.println("Report created");
+
+                            } catch (IOException e) {
+                                System.out.println("Error creating file");
+                            }
+
                             break;
                     }
                 }

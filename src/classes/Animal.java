@@ -6,9 +6,6 @@ import java.util.Map;
 
 
 public class Animal {
-
-
-
     private int animalID;
     private static int animalStaticID = 0;
     private String animalName;
