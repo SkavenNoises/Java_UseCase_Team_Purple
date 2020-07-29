@@ -31,6 +31,19 @@ public class AnimalEnclosure {
         return enclosureSpecies;
     }
 
+    public boolean hasAnimal(Animal animal) {
+        boolean containsAnimal = false;
+
+        for (Animal a : this.animalListInEnclosure) {
+            if (a.getAnimalID() == animal.getAnimalID()) {
+                containsAnimal = true;
+                break;
+            }
+        }
+
+        return containsAnimal;
+    }
+
     public int getEnclosureID() {
         return enclosureID;
     }
@@ -87,8 +100,8 @@ public class AnimalEnclosure {
         }
     }
 
-    public void addAnimal(int animalId) {
-        this.getAnimalListInEnclosure().add(Animal.animalsHash.get(animalId));
+    public void addAnimal(Animal animal) {
+        this.getAnimalListInEnclosure().add(animal);
         System.out.println("Animal Added");
     }
 
