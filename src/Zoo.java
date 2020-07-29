@@ -152,11 +152,32 @@ public class Zoo {
                             break;
 
                         case 11: // TODO list resources -kieran
+                            // Finding all the resources for all the animals across all the enclosures
+                            ArrayList<Resource> resourceArrayList = new ArrayList<>();
+                            for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
+                                for (AnimalEnclosure animalEnclosure : zooEmployee.getEmployeeEnclosures()) {
+                                    for (Animal animal : animalEnclosure.getAnimalListInEnclosure()) {
+                                        resourceArrayList.add(animal.getFood());
+                                        resourceArrayList.add(animal.getMedication());
+                                    }
+                                }
+                            }
+
+                            // Printout header
+                            System.out.println("\nALL animal(s) in Zoo:");
+                            String resourceHeader = String.format("%3s %20s %20s %20s %20s %20s", "ID", "Name", "Quantity", "Type", "Provider", "Price");
+                            System.out.println(resourceHeader);
+                            System.out.println("-".repeat(resourceHeader.length()));
+
+                            // Filling the table up with all the animals
+                            for (Resource resource : resourceArrayList) {
+                                System.out.println(String.format("%3s %20s %20s %20s %20s %20s", resource.getResourceID(), resource.getResourceName(), resource.getQuantityResource(), resource.getResourceType(), resource.getCompanyName(), "€" + resource.getResourcePrice()));
+                            }
 
                             break;
 
                         case 12: // TODO PrintReport -kieran
-
+                            zooManager.printReport();
                             break;
                     }
                 }
