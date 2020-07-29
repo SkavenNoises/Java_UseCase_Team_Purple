@@ -15,6 +15,7 @@ public class ZooEmployee {
         employeeIDCounter++;
         this.employeeID = employeeIDCounter;
         this.activeEmployee = true;
+        this.employeeEnclosures = new ArrayList<>();
     }
 
     public void sendAnimalToVet(int animalID) throws AnimalNotFoundException {

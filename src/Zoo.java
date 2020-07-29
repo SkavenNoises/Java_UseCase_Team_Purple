@@ -1,9 +1,18 @@
+import classes.*;
+import exceptions.AnimalNotFoundException;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Zoo {
 
     public static void main(String[] args) {
-
+        // Zoo objects
+        ZooManager zooManager = new ZooManager();
+        zooManager.hireEmployee(new ZooEmployee());
+        zooManager.getEmployeeHashMap().get(1).addEnclosureToEmployee(new AnimalEnclosure("TigerPagoda", true, true, false, Animal.AnimalSpecies.Tiger));
+        zooManager.getEmployeeHashMap().get(1).getEmployeeEnclosures().get(0).addAnimal(new Animal("Bao", true, new Resource("Meat", 10.99, "Flesh'r'us", 10, Resource.ResourceType.Food), 1, new Resource("Tranquilisers", 8.99, "SandMan Co", 59, Resource.ResourceType.Meds), 1, Animal.AnimalSpecies.Tiger));
+        VetClinic vetClinic = new VetClinic();
 
         // Init scanner obj
         Scanner scanner = new Scanner(System.in);
@@ -47,7 +56,79 @@ public class Zoo {
 
                         break;
 
-                    case 6: // TODO send animal to vet -kieran
+                    case 6: // Sending an animal to the vet
+                        // Listing all the animals so the user has an onscreen representation of all the animals
+                        ArrayList<Animal> animalArrayList = new ArrayList<>();
+
+                        // Putting all the animals into one arraylist for data manipulation
+                        for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
+                            for (AnimalEnclosure animalEnclosure : zooEmployee.getEmployeeEnclosures()) {
+                                animalArrayList.addAll(animalEnclosure.getAnimalListInEnclosure());
+                            }
+                        }
+
+                        // Printout header
+                        System.out.println("\nALL animal(s) in Zoo:");
+                        String header = String.format("%3s %20s", "ID", "Animal Name");
+                        System.out.println(header);
+                        System.out.println("-".repeat(header.length()));
+
+                        // Filling the table up with all the animals
+                        for (Animal animal : animalArrayList) {
+                            System.out.println(String.format("%3s %20s", animal.getAnimalID(), animal.getAnimalName()));
+                        }
+
+                        // Wait for user selection to decide which animal to send to the vet
+                        try {
+                            System.out.println("\nSelect which animal by ID to send to vet:");
+                            int animalToVet = Integer.parseInt(scanner.next());
+                            Animal foundAnimal = null;
+
+                            // Finding the correct animal from the enclosure related to the ID
+                            for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
+                                for (AnimalEnclosure animalEnclosure : zooEmployee.getEmployeeEnclosures()) {
+                                    for (Animal animal : animalEnclosure.getAnimalListInEnclosure()) {
+                                        if (animal.getAnimalID() == animalToVet) {
+                                            foundAnimal = animal;
+
+                                            // Removing the animal from the enclosure
+                                            animalEnclosure.removeAnimal(foundAnimal.getAnimalID());
+
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Checking to make sure the animal object has been initialised before manipulating it
+                            if (foundAnimal != null) {
+                                // Setting the animal as sick
+                                foundAnimal.setHealthy(false);
+
+                                // Removing the animal from the enclosure
+                                for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
+                                    for (AnimalEnclosure animalEnclosure : zooEmployee.getEmployeeEnclosures()) {
+                                        if (animalEnclosure.hasAnimal(foundAnimal)) {
+                                            animalEnclosure.removeAnimal(foundAnimal.getAnimalID());
+                                        }
+                                    }
+                                }
+
+                                // Add animal to the clinic
+                                vetClinic.addSickAnimalList(foundAnimal);
+
+                                System.out.println("Animal is now in the clinic and reported sick");
+
+                            } else {
+                                throw new AnimalNotFoundException("Animal cannot be found");
+                            }
+
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid selection");
+
+                        } catch (AnimalNotFoundException e) {
+                            System.out.println(e.getMessage());
+                        }
 
                         break;
 
