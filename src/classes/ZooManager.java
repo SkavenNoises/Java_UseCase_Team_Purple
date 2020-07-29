@@ -78,9 +78,9 @@ public class ZooManager {
 
             // Constructing what to write before writing it to file
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("\n+").append("-".repeat(35)).append("+");
+            stringBuilder.append("\n").append("-".repeat(35)).append("+");
             stringBuilder.append(String.format("%20s", "Zoo Report"));
-            stringBuilder.append("\n+").append("-".repeat(35)).append("+");
+            stringBuilder.append("\n").append("-".repeat(35)).append("+");
 
             // Adding a list of all employees and their enclosures
             stringBuilder.append("\nEmployees:");
