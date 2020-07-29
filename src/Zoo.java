@@ -27,136 +27,139 @@ public class Zoo {
                 // Holding the user selection
                 int userSelection = Integer.parseInt(scanner.next());
 
-                // TODO - catch out of bounds user selection
+                // Catching out of bounds selection
+                if (userSelection < 0 || userSelection > 12) {
+                    throw new NumberFormatException();
 
-                // Menu options
-                switch (userSelection) {
-                    case 0:
-                        System.out.println("Program closing...");
-                        endLoop = true;
-                        break;
+                } else {
+                    // Menu options
+                    switch (userSelection) {
+                        case 0:
+                            System.out.println("Program closing...");
+                            endLoop = true;
+                            break;
 
-                    case 1: // TODO list all animals - sinduri
+                        case 1: // TODO list all animals - sinduri
 
-                        break;
+                            break;
 
-                    case 2: // TODO Add an animal - sinduri
+                        case 2: // TODO Add an animal - sinduri
 
-                        break;
+                            break;
 
-                    case 3: // TODO Zoo employee maintaining the habit - sinduri
+                        case 3: // TODO Zoo employee maintaining the habit - sinduri
 
-                        break;
+                            break;
 
-                    case 4: // TODO Which species is eating the most food - sinduri
+                        case 4: // TODO Which species is eating the most food - sinduri
 
-                        break;
+                            break;
 
-                    case 5: // TODO which species is using the most medication -sinduri
+                        case 5: // TODO which species is using the most medication -sinduri
 
-                        break;
+                            break;
 
-                    case 6: // Sending an animal to the vet
-                        // Listing all the animals so the user has an onscreen representation of all the animals
-                        ArrayList<Animal> animalArrayList = new ArrayList<>();
+                        case 6: // Sending an animal to the vet
+                            // Listing all the animals so the user has an onscreen representation of all the animals
+                            ArrayList<Animal> animalArrayList = new ArrayList<>();
 
-                        // Putting all the animals into one arraylist for data manipulation
-                        for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
-                            for (AnimalEnclosure animalEnclosure : zooEmployee.getEmployeeEnclosures()) {
-                                animalArrayList.addAll(animalEnclosure.getAnimalListInEnclosure());
-                            }
-                        }
-
-                        // Printout header
-                        System.out.println("\nALL animal(s) in Zoo:");
-                        String header = String.format("%3s %20s", "ID", "Animal Name");
-                        System.out.println(header);
-                        System.out.println("-".repeat(header.length()));
-
-                        // Filling the table up with all the animals
-                        for (Animal animal : animalArrayList) {
-                            System.out.println(String.format("%3s %20s", animal.getAnimalID(), animal.getAnimalName()));
-                        }
-
-                        // Wait for user selection to decide which animal to send to the vet
-                        try {
-                            System.out.println("\nSelect which animal by ID to send to vet:");
-                            int animalToVet = Integer.parseInt(scanner.next());
-                            Animal foundAnimal = null;
-
-                            // Finding the correct animal from the enclosure related to the ID
+                            // Putting all the animals into one arraylist for data manipulation
                             for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
                                 for (AnimalEnclosure animalEnclosure : zooEmployee.getEmployeeEnclosures()) {
-                                    for (Animal animal : animalEnclosure.getAnimalListInEnclosure()) {
-                                        if (animal.getAnimalID() == animalToVet) {
-                                            foundAnimal = animal;
-
-                                            // Removing the animal from the enclosure
-                                            animalEnclosure.removeAnimal(foundAnimal.getAnimalID());
-
-                                            break;
-                                        }
-                                    }
+                                    animalArrayList.addAll(animalEnclosure.getAnimalListInEnclosure());
                                 }
                             }
 
-                            // Checking to make sure the animal object has been initialised before manipulating it
-                            if (foundAnimal != null) {
-                                // Setting the animal as sick
-                                foundAnimal.setHealthy(false);
+                            // Printout header
+                            System.out.println("\nALL animal(s) in Zoo:");
+                            String header = String.format("%3s %20s", "ID", "Animal Name");
+                            System.out.println(header);
+                            System.out.println("-".repeat(header.length()));
 
-                                // Removing the animal from the enclosure
+                            // Filling the table up with all the animals
+                            for (Animal animal : animalArrayList) {
+                                System.out.println(String.format("%3s %20s", animal.getAnimalID(), animal.getAnimalName()));
+                            }
+
+                            // Wait for user selection to decide which animal to send to the vet
+                            try {
+                                System.out.println("\nSelect which animal by ID to send to vet:");
+                                int animalToVet = Integer.parseInt(scanner.next());
+                                Animal foundAnimal = null;
+
+                                // Finding the correct animal from the enclosure related to the ID
                                 for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
                                     for (AnimalEnclosure animalEnclosure : zooEmployee.getEmployeeEnclosures()) {
-                                        if (animalEnclosure.hasAnimal(foundAnimal)) {
-                                            animalEnclosure.removeAnimal(foundAnimal.getAnimalID());
+                                        for (Animal animal : animalEnclosure.getAnimalListInEnclosure()) {
+                                            if (animal.getAnimalID() == animalToVet) {
+                                                foundAnimal = animal;
+
+                                                // Removing the animal from the enclosure
+                                                animalEnclosure.removeAnimal(foundAnimal.getAnimalID());
+
+                                                break;
+                                            }
                                         }
                                     }
                                 }
 
-                                // Add animal to the clinic
-                                vetClinic.addSickAnimalList(foundAnimal);
+                                // Checking to make sure the animal object has been initialised before manipulating it
+                                if (foundAnimal != null) {
+                                    // Setting the animal as sick
+                                    foundAnimal.setHealthy(false);
 
-                                System.out.println("Animal is now in the clinic and reported sick");
+                                    // Removing the animal from the enclosure
+                                    for (ZooEmployee zooEmployee : zooManager.getEmployeeHashMap().values()) {
+                                        for (AnimalEnclosure animalEnclosure : zooEmployee.getEmployeeEnclosures()) {
+                                            if (animalEnclosure.hasAnimal(foundAnimal)) {
+                                                animalEnclosure.removeAnimal(foundAnimal.getAnimalID());
+                                            }
+                                        }
+                                    }
 
-                            } else {
-                                throw new AnimalNotFoundException("Animal cannot be found");
+                                    // Add animal to the clinic
+                                    vetClinic.addSickAnimalList(foundAnimal);
+
+                                    System.out.println("Animal is now in the clinic and reported sick");
+
+                                } else {
+                                    throw new AnimalNotFoundException("Animal cannot be found");
+                                }
+
+                            } catch (NumberFormatException e) {
+                                System.out.println("Invalid selection");
+
+                            } catch (AnimalNotFoundException e) {
+                                System.out.println(e.getMessage());
                             }
 
-                        } catch (NumberFormatException e) {
-                            System.out.println("Invalid selection");
+                            break;
 
-                        } catch (AnimalNotFoundException e) {
-                            System.out.println(e.getMessage());
-                        }
+                        case 7: // TODO list all sick animals - zumrut
 
-                        break;
+                            break;
 
-                    case 7: // TODO list all sick animals - zumrut
+                        case 8: // TODO List all vet clinic history -zumrut
 
-                        break;
+                            break;
 
-                    case 8: // TODO List all vet clinic history -zumrut
+                        case 9: // TODO How many animals are in special care -zumrut
 
-                        break;
+                            break;
 
-                    case 9: // TODO How many animals are in special care -zumrut
+                        case 10: // TODO How many times the vet has been called per species -zumrut
 
-                        break;
+                            break;
 
-                    case 10: // TODO How many times the vet has been called per species -zumrut
+                        case 11: // TODO list resources -kieran
 
-                        break;
+                            break;
 
-                    case 11: // TODO list resources -kieran
+                        case 12: // TODO PrintReport -kieran
 
-                        break;
-
-                    case 12: // TODO PrintReport -kieran
-
-                        break;
+                            break;
+                    }
                 }
-
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid selection");
             }
