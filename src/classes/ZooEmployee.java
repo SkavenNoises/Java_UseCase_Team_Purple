@@ -3,6 +3,7 @@ package classes;
 import exceptions.AnimalNotFoundException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ZooEmployee {
     private static int employeeIDCounter = 0;
@@ -11,11 +12,14 @@ public class ZooEmployee {
     private boolean activeEmployee;
     private ArrayList<AnimalEnclosure> employeeEnclosures;
 
+    public static HashMap<Integer, ZooEmployee> zooEmployeeHash = new HashMap<>();
+
     public ZooEmployee() {
         employeeIDCounter++;
         this.employeeID = employeeIDCounter;
         this.activeEmployee = true;
         this.employeeEnclosures = new ArrayList<>();
+        zooEmployeeHash.put(this.employeeID, this);
     }
 
     public void sendAnimalToVet(int animalID) throws AnimalNotFoundException {

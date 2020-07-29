@@ -42,23 +42,23 @@ public class Zoo {
                             break;
 
                         case 1: // TODO list all animals - sinduri
-
+                            Animal.printAllAnimals();
                             break;
 
                         case 2: // TODO Add an animal - sinduri
-
+                            Animal.addNewAnimal();
                             break;
 
                         case 3: // TODO Zoo employee maintaining the habit - sinduri
-
+                            AnimalEnclosure.checkEnclosureMaintenance();
                             break;
 
                         case 4: // TODO Which species is eating the most food - sinduri
-
+                            Animal.averageExpensiveFood();
                             break;
 
                         case 5: // TODO which species is using the most medication -sinduri
-
+                            Animal.averageExpensiveMedicine();
                             break;
 
                         case 6: // Sending an animal to the vet
