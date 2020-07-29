@@ -6,9 +6,13 @@ public class VetClinic {
 
     private ArrayList<Animal> sickAnimalList = new ArrayList<>();
     private ArrayList<Animal> specialCare = new ArrayList<>();
+    //HashMap<Animal.AnimalSpecies, Integer> index
+    public VetClinic(ArrayList<Animal> sickAnimalList, ArrayList<Animal> specialCare) {
+        this.sickAnimalList = sickAnimalList;
+        this.specialCare = specialCare;
+    }
 
-
-    //SickAnimal Size/Add/Remove/List
+//SickAnimal Size/Add/Remove/List
 
     public int getAmountOfSickAnimal() {
         return sickAnimalList.size();
@@ -44,7 +48,7 @@ public class VetClinic {
         return specialCare;
     }
 
-    //Hashmap for How many times which species?
+    //Hashmap for How many times which Species (Enum from the Animal Class) in Vet
 
     public HashMap<Animal.AnimalSpecies, Integer> getSickAnimalsIndex() {
         HashMap<Animal.AnimalSpecies, Integer> index = new HashMap<>();
@@ -63,6 +67,9 @@ public class VetClinic {
                 "sickAnimalList=" + sickAnimalList.size() +
                 ", specialCare=" + specialCare.size() +
                 '}';
-    }}
+    }
+
+
+}
 
 

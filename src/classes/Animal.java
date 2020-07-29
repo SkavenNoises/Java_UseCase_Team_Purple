@@ -32,6 +32,10 @@ public class Animal {
 
     static HashMap<Integer, Animal> animalsHash = new HashMap<>();
 
+    public Animal() { // default constructor
+        this.animalName = "kitty";
+        this.animalID = 1;
+    }
     public Animal(String animalName, boolean isHealthy, Resource food, int quantityOfFoodEats, Resource medication, int quantityOfMedsRequired, classes.Animal.AnimalSpecies animalSpecies) {
         animalStaticID++;
         this.animalID = animalStaticID;

@@ -1,6 +1,10 @@
-import java.util.Scanner;
+import java.util.*;
+
+import classes.*;
 
 public class Zoo {
+
+
 
     public static void main(String[] args) {
 
@@ -9,6 +13,10 @@ public class Zoo {
         Scanner scanner = new Scanner(System.in);
 
         // App lifecycle
+
+        VetClinic vc = new VetClinic(new ArrayList<Animal>() , new ArrayList<Animal>());
+        vc.addSickAnimalList(new Animal());
+
         boolean endLoop = false;
         while (!endLoop) {
             try {
@@ -52,18 +60,31 @@ public class Zoo {
                         break;
 
                     case 7: // TODO list all sick animals - zumrut
+                         //sickAnimalList.getSickAnimalList.displayAnimal();
+                        ArrayList<Animal> temp = vc.getSickAnimalList();
+
+                        for (Integer i = 0; i < temp.size(); i++) {
+                            //System.out.println("Animal: "+ temp.get(i).getAnimalName() + "..." + "|");
+                            System.out.println(temp.get(i));
+                        }
 
                         break;
 
                     case 8: // TODO List all vet clinic history -zumrut
+                        HashMap<Animal.AnimalSpecies, Integer> hs = vc.getSickAnimalsIndex();
+
+                        for( Map.Entry<Animal.AnimalSpecies, Integer> entry : hs.entrySet() ){
+                            System.out.println( entry.getKey() + ": " + entry.getValue() );
+                        }
+
 
                         break;
 
                     case 9: // TODO How many animals are in special care -zumrut
-
+                        //size()
                         break;
 
-                    case 10: // TODO How many times the vet has been called per species -zumrut
+                    case 10: // TODO How many times the vet has been called per species -
 
                         break;
 
