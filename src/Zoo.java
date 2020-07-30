@@ -4,6 +4,7 @@ import exceptions.AnimalNotFoundException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -153,21 +154,31 @@ public class Zoo {
                             break;
 
                         case 7: // Displays all the sick animals
+                            var derek = new Animal("Derek", false, new Resource("Vegetarian", 10.99, "XYZ AB",
+
+                                    10, Resource.ResourceType.Food), 1,
+
+                                    new Resource("Painkiller X", 8.99, "Unknown Pharmaceuticals", 59, Resource.ResourceType.Meds),
+
+                                    1, Animal.AnimalSpecies.Bear);
+
+                            var jack = new Animal("Jack", false, new Resource("Vegetarian", 10.99, "XYZ AB",
+
+                                    10, Resource.ResourceType.Food), 1,
+
+                                    new Resource("Painkiller X", 8.99, "Unknown Pharmaceuticals", 59, Resource.ResourceType.Meds),
+
+                                    1, Animal.AnimalSpecies.Monkey);
 
                             var sickAnimalList = vetClinic.getSickAnimalList();
-                            sickAnimalList.forEach(sickAnimal -> System.out.println(sickAnimal.getAnimalName()));
+                            vetClinic.addSickAnimalList(derek);
+                            vetClinic.addSickAnimalList(jack);
+                            System.out.println("Animals in the Veterinary Clinic:");
+                            System.out.println("---------------------------------");
+                            System.out.printf("%n%-5s %-1s %-13s", "Name", "Species", "ID");
+                            System.out.println();
+                            sickAnimalList.forEach(sickAnimal -> System.out.println(sickAnimal.getAnimalName()+ " " + " " +  sickAnimal.getAnimalSpecies()+ " " + " " + sickAnimal.getAnimalID()));
 
-                            //sickAnimalList.getSickAnimalList.displayAnimal();
-
-                            /*ArrayList<Animal> temp = vc.getSickAnimalList();
-
-                             for (Integer i = 0; i < temp.size(); i++) {
-
-                             //System.out.println("Animal: "+ temp.get(i).getAnimalName() + "..." + "|");
-
-                             System.out.println(temp.get(i));
-
-                            }*/
                             break;
 
                         case 8: // Lists the vet clinic's history
@@ -175,8 +186,7 @@ public class Zoo {
                             HashMap<Animal.AnimalSpecies, Integer> hs = vetClinic.getSickAnimalsIndex();
 
                             for( Map.Entry<Animal.AnimalSpecies, Integer> entry : hs.entrySet() ){
-                                System.out.println( entry.getKey() + ": " + entry.getValue() );
-
+                                System.out.println(entry.getKey() + ": " + entry.getValue());
                             }
                             break;
 
@@ -184,7 +194,7 @@ public class Zoo {
 
                             ArrayList<Animal> specialCareList = vetClinic.getSpecialCare();
 
-                            System.out.println("Count:" + specialCareList.size());
+                            System.out.println("Number of Animals in Special Care:" + specialCareList.size());
 
                             break;
 
