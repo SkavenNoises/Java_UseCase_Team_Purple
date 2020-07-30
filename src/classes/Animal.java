@@ -30,7 +30,7 @@ public class Animal {
 
     private AnimalSpecies animalSpecies;
 
-    static HashMap<Integer, Animal> animalsHash = new HashMap<>();
+    public static HashMap<Integer, Animal> animalsHash = new HashMap<>();
 
     public Animal(String animalName, boolean isHealthy, Resource food, int quantityOfFoodEats, classes.Animal.AnimalSpecies animalSpecies) {
         animalStaticID++;
@@ -45,7 +45,7 @@ public class Animal {
         this.medication = null;
 
     }
-  
+
     public Animal(String animalName, boolean isHealthy, Resource food, int quantityOfFoodEats, Resource medication, int quantityOfMedsRequired, classes.Animal.AnimalSpecies animalSpecies) {
         animalStaticID++;
         this.animalID = animalStaticID;
@@ -168,8 +168,8 @@ public class Animal {
 
     public int totalFoodEaten() {
         int totalFood = 0;
-        for(Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : this.getFoodGivenAt().entrySet()) {
-            for(Map.Entry<Resource, Integer> entryValue : entry.getValue().entrySet()) {
+        for (Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : this.getFoodGivenAt().entrySet()) {
+            for (Map.Entry<Resource, Integer> entryValue : entry.getValue().entrySet()) {
                 totalFood += entryValue.getValue();
             }
         }
@@ -179,8 +179,8 @@ public class Animal {
 
     public int totalMedicineTaken() {
         int totalMedication = 0;
-        for(Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : this.getMedsGivenAt().entrySet()) {
-            for(Map.Entry<Resource, Integer> entryValue : entry.getValue().entrySet()) {
+        for (Map.Entry<LocalDateTime, HashMap<Resource, Integer>> entry : this.getMedsGivenAt().entrySet()) {
+            for (Map.Entry<Resource, Integer> entryValue : entry.getValue().entrySet()) {
                 totalMedication += entryValue.getValue();
             }
         }
@@ -188,19 +188,6 @@ public class Animal {
 
     }
 
-    public static void printAllAnimals() {
-        System.out.printf("%n%-10s %-32s %-15s %-20s %-10s %-20s %-10s %-32s",
-                "AnimalID", "AnimalName", "isHealthy", "Food", "Quantity", "Medicine", "Quantity", "Species");
-        for(Map.Entry<Integer, Animal> entry : animalsHash.entrySet()) {
-            System.out.printf("%n%-10d %-32s %-15s %-20s %-10d %-20s %-10s %-32s",
-                    entry.getKey(), entry.getValue().getAnimalName(),
-                    entry.getValue().isHealthy() ? "Healthy" : "Not Healthy",
-                    entry.getValue().getFood().getResourceName(), entry.getValue().getQuantityOfFoodEats(),
-                    (entry.getValue().getMedication() == null) ? "None" : entry.getValue().getMedication().getResourceName(),
-                    (entry.getValue().getQuantityOfMedsRequired() == 0) ? "None": entry.getValue().getQuantityOfMedsRequired(),
-                    entry.getValue().getAnimalSpecies());
-        }
-    }
 
     private static Resource resourceGet;
 
@@ -212,10 +199,10 @@ public class Animal {
 
         boolean isAnimalHealthy = true;
         boolean loopWhile1 = true;
-        while(loopWhile1) {
+        while (loopWhile1) {
             System.out.print("Is the animal healthy? Y or N? ");
             String animalHealth = inputText.nextLine();
-            if(animalHealth.toUpperCase().equals("Y")) {
+            if (animalHealth.toUpperCase().equals("Y")) {
                 loopWhile1 = false;
             } else if (animalHealth.toUpperCase().equals("N")) {
                 isAnimalHealthy = false;
@@ -228,10 +215,16 @@ public class Animal {
         boolean loopWhile2 = true;
         Resource food = resourceGet;
         int foodQuantity = 0;
-        while(loopWhile2) {
-            System.out.print("Enter the id of the food you want to assign to this animal: ");
+        while (loopWhile2) {
+            System.out.println("Enter the id of the food you want to assign to this animal: ");
+            for (Map.Entry<Integer, Resource> entryResource : Resource.resourcesHash.entrySet()) {
+                if (entryResource.getValue().getResourceType().equals(Resource.ResourceType.Food)) {
+                    System.out.println("Press " + entryResource.getKey() + " to select " + entryResource.getValue().getResourceName());
+
+                }
+            }
             int foodID = Integer.parseInt(inputNumber.next());
-            if(Resource.resourcesHash.containsKey(foodID) && Resource.resourcesHash.get(foodID).getResourceType().equals(Resource.ResourceType.Food)) {
+            if (Resource.resourcesHash.containsKey(foodID) && Resource.resourcesHash.get(foodID).getResourceType().equals(Resource.ResourceType.Food)) {
                 food = Resource.resourcesHash.get(foodID);
                 System.out.print("Enter the quantity of food this animal consumes in a day: ");
                 foodQuantity = Integer.parseInt(inputNumber.next());
@@ -244,13 +237,19 @@ public class Animal {
         boolean loopWhile3 = true;
         Resource medication = resourceGet;
         int medQuantity = 0;
-        while(loopWhile3) {
+        while (loopWhile3) {
             System.out.print("Is the animal on medication? Y or N? ");
             String animalMedication = inputText.nextLine();
-            if(animalMedication.toUpperCase().equals("Y")) {
-                System.out.print("Enter the id of the medicine you want to assign to this animal: ");
+            if (animalMedication.toUpperCase().equals("Y")) {
+                System.out.println("Enter the id of the medicine you want to assign to this animal: ");
+
+                for (Map.Entry<Integer, Resource> entryResource : Resource.resourcesHash.entrySet()) {
+                    if (entryResource.getValue().getResourceType().equals(Resource.ResourceType.Meds)) {
+                        System.out.println("Press " + entryResource.getKey() + " to select " + entryResource.getValue().getResourceName());
+                    }
+                }
                 int medID = Integer.parseInt(inputNumber.next());
-                if(Resource.resourcesHash.containsKey(medID) && Resource.resourcesHash.get(medID).getResourceType().equals(Resource.ResourceType.Meds)) {
+                if (Resource.resourcesHash.containsKey(medID) && Resource.resourcesHash.get(medID).getResourceType().equals(Resource.ResourceType.Meds)) {
                     medication = Resource.resourcesHash.get(medID);
                     System.out.print("Enter the quantity of medicine required in a day: ");
                     medQuantity = Integer.parseInt(inputNumber.next());
@@ -268,35 +267,53 @@ public class Animal {
 
         int counterSpecies = 0;
         for (Animal.AnimalSpecies animalSpecies : Animal.AnimalSpecies.values()) {
+
             System.out.println("Press " + counterSpecies + " to choose the Species, " + animalSpecies);
             counterSpecies++;
         }
         int inputSpeciesCounter = Integer.parseInt(inputNumber.next());
 
-        if(medQuantity == 0) {
-            Animal animal = new Animal(animalName, isAnimalHealthy, food, foodQuantity, (Animal.AnimalSpecies) Array.get(Animal.AnimalSpecies.values(), inputSpeciesCounter));
-        } else {
-            Animal animal = new Animal(animalName, isAnimalHealthy, food, foodQuantity, medication, medQuantity, (Animal.AnimalSpecies) Array.get(Animal.AnimalSpecies.values(), inputSpeciesCounter));
+        boolean loopBoolean4 = true;
+
+        while(loopBoolean4) {
+            for(Map.Entry<Integer, AnimalEnclosure> entryEnclosure : AnimalEnclosure.enclosureHash.entrySet()) {
+                System.out.println("Press " + entryEnclosure.getKey() + " to add the animal to enclosure, " + entryEnclosure.getValue().getEnclosureName());
+            }
+            int inputEnclosure  = Integer.parseInt(inputNumber.next());
+            if(!AnimalEnclosure.enclosureHash.get(inputEnclosure).getEnclosureSpecies().equals(Array.get(Animal.AnimalSpecies.values(), inputSpeciesCounter))) {
+                System.out.println("You chose the wrong Enclosure for this species");
+            } else  {
+                if (medQuantity == 0) {
+                    Animal animal = new Animal(animalName, isAnimalHealthy, food, foodQuantity, (Animal.AnimalSpecies) Array.get(Animal.AnimalSpecies.values(), inputSpeciesCounter));
+                    AnimalEnclosure.enclosureHash.get(inputEnclosure).addAnimal(animal);
+                } else {
+                    Animal animal = new Animal(animalName, isAnimalHealthy, food, foodQuantity, medication, medQuantity, (Animal.AnimalSpecies) Array.get(Animal.AnimalSpecies.values(), inputSpeciesCounter));
+                    AnimalEnclosure.enclosureHash.get(inputEnclosure).addAnimal(animal);
+                }
+                loopBoolean4 = false;
+            }
+
+
         }
-        System.out.println("New animal added!");
+
     }
 
     public static void averageExpensiveFood() {
         HashMap<AnimalSpecies, Double> animalSpeciesListHashMap = new HashMap<>();
         int totalAnimals = Animal.animalsHash.size();
         double totalCostOfAllAnimals = 0;
-        for(Animal.AnimalSpecies animalSpecies : Animal.AnimalSpecies.values()) {
+        for (Animal.AnimalSpecies animalSpecies : Animal.AnimalSpecies.values()) {
             double totalAverageCostPerDayPerAnimal = 0;
             double totalCostPerDay = 0;
             int counter = 0;
-            for(Map.Entry<Integer, Animal> animalSet : animalsHash.entrySet()) {
-                if(animalSet.getValue().getAnimalSpecies().equals(animalSpecies)) {
+            for (Map.Entry<Integer, Animal> animalSet : animalsHash.entrySet()) {
+                if (animalSet.getValue().getAnimalSpecies().equals(animalSpecies)) {
                     counter++;
                     totalCostPerDay += (animalSet.getValue().getQuantityOfFoodEats() * animalSet.getValue().getFood().getResourcePrice());
                     totalCostOfAllAnimals += (animalSet.getValue().getQuantityOfFoodEats() * animalSet.getValue().getFood().getResourcePrice());
                 }
             }
-            if(counter != 0) {
+            if (counter != 0) {
                 totalAverageCostPerDayPerAnimal = totalCostPerDay / counter;
             }
 
@@ -304,7 +321,7 @@ public class Animal {
         }
 
         AnimalSpecies expensiveSpecies = Collections.max(animalSpeciesListHashMap.entrySet(), Map.Entry.comparingByValue()).getKey();
-        System.out.printf("The average cost to feed all the animals in the zoo is %.2f€.%n", totalCostOfAllAnimals/totalAnimals);
+        System.out.printf("The average cost to feed all the animals in the zoo is %.2f€.%n", totalCostOfAllAnimals / totalAnimals);
         System.out.printf("%s is the most expensive species considering the average of the amount of food eaten and price of food. The average cost per day per animal is %.2f€.", expensiveSpecies, Collections.max(animalSpeciesListHashMap.values()));
 
     }
@@ -313,21 +330,21 @@ public class Animal {
         HashMap<AnimalSpecies, Double> animalSpeciesListHashMap = new HashMap<>();
         int totalAnimals = Animal.animalsHash.size();
         double totalCostOfAllAnimals = 0;
-        for(Animal.AnimalSpecies animalSpecies : Animal.AnimalSpecies.values()) {
+        for (Animal.AnimalSpecies animalSpecies : Animal.AnimalSpecies.values()) {
             double totalAverageCostPerDayPerAnimal = 0;
             double totalCostPerDay = 0;
             int counter = 0;
-            for(Map.Entry<Integer, Animal> animalSet : animalsHash.entrySet()) {
-                if(animalSet.getValue().getAnimalSpecies().equals(animalSpecies)) {
+            for (Map.Entry<Integer, Animal> animalSet : animalsHash.entrySet()) {
+                if (animalSet.getValue().getAnimalSpecies().equals(animalSpecies)) {
                     counter++;
-                    if(animalSet.getValue().getQuantityOfMedsRequired() > 0) {
+                    if (animalSet.getValue().getQuantityOfMedsRequired() > 0) {
                         totalCostPerDay += (animalSet.getValue().getQuantityOfMedsRequired() * animalSet.getValue().getMedication().getResourcePrice());
                         totalCostOfAllAnimals += (animalSet.getValue().getQuantityOfMedsRequired() * animalSet.getValue().getMedication().getResourcePrice());
                     }
 
                 }
             }
-            if(counter != 0) {
+            if (counter != 0) {
                 totalAverageCostPerDayPerAnimal = totalCostPerDay / counter;
             }
 
@@ -335,7 +352,7 @@ public class Animal {
         }
 
         AnimalSpecies expensiveSpecies = Collections.max(animalSpeciesListHashMap.entrySet(), Map.Entry.comparingByValue()).getKey();
-        System.out.printf("The average cost spent on medications of all the animals inside habitats in the zoo is %.2f€.%n", totalCostOfAllAnimals/totalAnimals);
+        System.out.printf("The average cost spent on medications of all the animals inside habitats in the zoo is %.2f€.%n", totalCostOfAllAnimals / totalAnimals);
         System.out.printf("%s is the most expensive species considering the average of the amount of medicine taken and price of medicine. The average cost per day per animal is %.2f€.", expensiveSpecies, Collections.max(animalSpeciesListHashMap.values()));
 
     }
