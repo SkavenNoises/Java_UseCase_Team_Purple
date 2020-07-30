@@ -4,6 +4,7 @@ import exceptions.AnimalNotFoundException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,25 @@ public class Zoo {
         zooManager.getEmployeeHashMap().get(1).AddVetCall(zooManager.getEmployeeHashMap().get(1).getEmployeeEnclosures().get(0).getAnimalListInEnclosure().get(0));
         zooManager.getEmployeeHashMap().get(2).AddVetCall(zooManager.getEmployeeHashMap().get(2).getEmployeeEnclosures().get(0).getAnimalListInEnclosure().get(0));
 
+        var derek = new Animal("Derek", false, new Resource("Vegetarian", 10.99, "XYZ AB",
+
+                10, Resource.ResourceType.Food), 1,
+
+                new Resource("Painkiller X", 8.99, "Unknown Pharmaceuticals", 59, Resource.ResourceType.Meds),
+
+                1, Animal.AnimalSpecies.Bear);
+
+        var jack = new Animal("Jack", false, new Resource("Vegetarian", 10.99, "XYZ AB",
+
+                10, Resource.ResourceType.Food), 1,
+
+                new Resource("Painkiller X", 8.99, "Unknown Pharmaceuticals", 59, Resource.ResourceType.Meds),
+
+                1, Animal.AnimalSpecies.Monkey);
+
+        var sickAnimalList = vetClinic.getSickAnimalList();
+        vetClinic.addSickAnimalList(derek);
+        vetClinic.addSickAnimalList(jack);
         // Init scanner obj
         Scanner scanner = new Scanner(System.in);
 
@@ -181,20 +201,13 @@ public class Zoo {
 
                         case 7: // Displays all the sick animals
 
-                            var sickAnimalList = vetClinic.getSickAnimalList();
-                            sickAnimalList.forEach(sickAnimal -> System.out.println(sickAnimal.getAnimalName()));
+                            System.out.println("Animals in the Veterinary Clinic:");
+                            System.out.println("---------------------------------");
+                            System.out.printf("%n%3s %20s %20s", "ID", "Species", "Name");
 
-                            //sickAnimalList.getSickAnimalList.displayAnimal();
+                            System.out.println();
+                            sickAnimalList.forEach(sickAnimal -> System.out.printf("%n%3s %20s %20s", sickAnimal.getAnimalID(), sickAnimal.getAnimalSpecies(), sickAnimal.getAnimalName()));
 
-                            /*ArrayList<Animal> temp = vc.getSickAnimalList();
-
-                             for (Integer i = 0; i < temp.size(); i++) {
-
-                             //System.out.println("Animal: "+ temp.get(i).getAnimalName() + "..." + "|");
-
-                             System.out.println(temp.get(i));
-
-                            }*/
                             break;
 
                         case 8: // Lists the vet clinic's history
@@ -204,6 +217,7 @@ public class Zoo {
                             for (Map.Entry<Animal.AnimalSpecies, Integer> entry : hs.entrySet()) {
                                 System.out.println(entry.getKey() + ": " + entry.getValue());
 
+                                System.out.println(entry.getKey() + ": " + entry.getValue());
                             }
                             break;
 
@@ -211,7 +225,7 @@ public class Zoo {
 
                             ArrayList<Animal> specialCareList = vetClinic.getSpecialCare();
 
-                            System.out.println("Count:" + specialCareList.size());
+                            System.out.println("Number of Animals in Special Care:" + specialCareList.size());
 
                             break;
 
@@ -303,7 +317,7 @@ public class Zoo {
 
                                 // Adding it to the report stringBuilder
                                 stringBuilder.append("\n\n").append("Animal List:").append("\n");
-                                String animalListHeader = String.format("%3s %20s %20s %20s %20s %20s %20s %20s", "ID", "Name", "Species", "Health", "Food", "perServing", "Meds", "perServing");
+                                String animalListHeader = String.format("%3s %20s %20s %20s %20s %20s %30s %20s", "ID", "Name", "Species", "Health", "Food", "perServing", "Meds", "perServing");
                                 stringBuilder.append(animalListHeader).append("\n");
                                 stringBuilder.append("-".repeat(animalListHeader.length())).append("\n");
 
@@ -316,7 +330,7 @@ public class Zoo {
                                         healthStatus = "Sick";
                                     }
 
-                                    stringBuilder.append(String.format("%3s %20s %20s %20s %20s %20s %20s %20s", animal.getAnimalID(), animal.getAnimalName(), animal.getAnimalSpecies(), healthStatus, animal.getFood().getResourceName(), animal.getQuantityOfFoodEats(), animal.getMedication().getResourceName(), animal.getQuantityOfMedsRequired())).append("\n");
+                                    stringBuilder.append(String.format("%3s %20s %20s %20s %20s %20s %30s %20s", animal.getAnimalID(), animal.getAnimalName(), animal.getAnimalSpecies(), healthStatus, animal.getFood().getResourceName(), animal.getQuantityOfFoodEats(), animal.getMedication().getResourceName(), animal.getQuantityOfMedsRequired())).append("\n");
                                 }
 
                                 // Listing all of the current resources
@@ -331,13 +345,13 @@ public class Zoo {
                                 }
 
                                 // Writing the resources to a report format
-                                String resourceReportHeader = String.format("%3s %20s %20s %20s %20s", "ID", "Name", "Quantity", "Supplier", "Price");
+                                String resourceReportHeader = String.format("%3s %30s %20s %20s %20s", "ID", "Name", "Quantity", "Supplier", "Price");
                                 stringBuilder.append("\n\n").append("Resources:").append("\n");
                                 stringBuilder.append(resourceReportHeader).append("\n");
                                 stringBuilder.append("-".repeat(resourceReportHeader.length())).append("\n");
 
                                 for (Resource resource : resourceReportArrayList) {
-                                    stringBuilder.append(String.format("%3s %20s %20s %20s %20s", resource.getResourceID(), resource.getResourceName(), resource.getQuantityResource(), resource.getCompanyName(), "€" + resource.getResourcePrice())).append("\n");
+                                    stringBuilder.append(String.format("%3s %30s %20s %20s %20s", resource.getResourceID(), resource.getResourceName(), resource.getQuantityResource(), resource.getCompanyName(), "€" + resource.getResourcePrice())).append("\n");
                                 }
 
                                 // Writing the vet clinic animals to the report
@@ -358,6 +372,17 @@ public class Zoo {
 
                                 for (Animal animal : vetClinic.getSickAnimalList()) {
                                     stringBuilder.append(String.format("%3s %20s %20s", animal.getAnimalID(), animal.getAnimalName(), animal.getAnimalSpecies())).append("\n");
+                                }
+
+                                // Adding the vet callouts to the report
+                                stringBuilder.append("\n\n").append(String.format("%s %10s", "Vet Call-Outs", "Total: " + VetClinic.vetCalls.size())).append("\n");
+                                String vetCallOutHeader = String.format("%3s %20s", "ID", "Name");
+
+                                stringBuilder.append(vetCallOutHeader).append("\n");
+                                stringBuilder.append("-".repeat(vetCallOutHeader.length())).append("\n");
+
+                                for (Animal animal : VetClinic.vetCalls) {
+                                    stringBuilder.append(String.format("%3s %20s", animal.getAnimalID(), animal.getAnimalName())).append("\n");
                                 }
 
                                 // Writing report to the text file
