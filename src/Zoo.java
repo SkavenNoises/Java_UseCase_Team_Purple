@@ -31,6 +31,25 @@ public class Zoo {
         zooManager.getEmployeeHashMap().get(1).AddVetCall(zooManager.getEmployeeHashMap().get(1).getEmployeeEnclosures().get(0).getAnimalListInEnclosure().get(0));
         zooManager.getEmployeeHashMap().get(2).AddVetCall(zooManager.getEmployeeHashMap().get(2).getEmployeeEnclosures().get(0).getAnimalListInEnclosure().get(0));
 
+        var derek = new Animal("Derek", false, new Resource("Vegetarian", 10.99, "XYZ AB",
+
+                10, Resource.ResourceType.Food), 1,
+
+                new Resource("Painkiller X", 8.99, "Unknown Pharmaceuticals", 59, Resource.ResourceType.Meds),
+
+                1, Animal.AnimalSpecies.Bear);
+
+        var jack = new Animal("Jack", false, new Resource("Vegetarian", 10.99, "XYZ AB",
+
+                10, Resource.ResourceType.Food), 1,
+
+                new Resource("Painkiller X", 8.99, "Unknown Pharmaceuticals", 59, Resource.ResourceType.Meds),
+
+                1, Animal.AnimalSpecies.Monkey);
+
+        var sickAnimalList = vetClinic.getSickAnimalList();
+        vetClinic.addSickAnimalList(derek);
+        vetClinic.addSickAnimalList(jack);
         // Init scanner obj
         Scanner scanner = new Scanner(System.in);
 
@@ -154,38 +173,22 @@ public class Zoo {
                             break;
 
                         case 7: // Displays all the sick animals
-                            var derek = new Animal("Derek", false, new Resource("Vegetarian", 10.99, "XYZ AB",
 
-                                    10, Resource.ResourceType.Food), 1,
-
-                                    new Resource("Painkiller X", 8.99, "Unknown Pharmaceuticals", 59, Resource.ResourceType.Meds),
-
-                                    1, Animal.AnimalSpecies.Bear);
-
-                            var jack = new Animal("Jack", false, new Resource("Vegetarian", 10.99, "XYZ AB",
-
-                                    10, Resource.ResourceType.Food), 1,
-
-                                    new Resource("Painkiller X", 8.99, "Unknown Pharmaceuticals", 59, Resource.ResourceType.Meds),
-
-                                    1, Animal.AnimalSpecies.Monkey);
-
-                            var sickAnimalList = vetClinic.getSickAnimalList();
-                            vetClinic.addSickAnimalList(derek);
-                            vetClinic.addSickAnimalList(jack);
                             System.out.println("Animals in the Veterinary Clinic:");
                             System.out.println("---------------------------------");
-                            System.out.printf("%n%-5s %-1s %-13s", "Name", "Species", "ID");
+                            System.out.printf("%n%3s %20s %20s", "ID", "Species", "Name");
+
                             System.out.println();
-                            sickAnimalList.forEach(sickAnimal -> System.out.println(sickAnimal.getAnimalName()+ " " + " " +  sickAnimal.getAnimalSpecies()+ " " + " " + sickAnimal.getAnimalID()));
+                            sickAnimalList.forEach(sickAnimal -> System.out.printf("%n%3s %20s %20s", sickAnimal.getAnimalID(), sickAnimal.getAnimalSpecies(), sickAnimal.getAnimalName()));
 
                             break;
 
                         case 8: // Lists the vet clinic's history
 
                             HashMap<Animal.AnimalSpecies, Integer> hs = vetClinic.getSickAnimalsIndex();
-
+                            System.out.println("History of the Vet Clinic:");
                             for( Map.Entry<Animal.AnimalSpecies, Integer> entry : hs.entrySet() ){
+
                                 System.out.println(entry.getKey() + ": " + entry.getValue());
                             }
                             break;
