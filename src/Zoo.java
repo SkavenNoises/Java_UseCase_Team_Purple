@@ -276,7 +276,7 @@ public class Zoo {
 
                                 // Adding it to the report stringBuilder
                                 stringBuilder.append("\n\n").append("Animal List:").append("\n");
-                                String animalListHeader = String.format("%3s %20s %20s %20s %20s %20s %20s %20s", "ID", "Name", "Species", "Health", "Food", "perServing", "Meds", "perServing");
+                                String animalListHeader = String.format("%3s %20s %20s %20s %20s %20s %30s %20s", "ID", "Name", "Species", "Health", "Food", "perServing", "Meds", "perServing");
                                 stringBuilder.append(animalListHeader).append("\n");
                                 stringBuilder.append("-".repeat(animalListHeader.length())).append("\n");
 
@@ -289,7 +289,7 @@ public class Zoo {
                                         healthStatus = "Sick";
                                     }
 
-                                    stringBuilder.append(String.format("%3s %20s %20s %20s %20s %20s %20s %20s", animal.getAnimalID(), animal.getAnimalName(), animal.getAnimalSpecies(), healthStatus, animal.getFood().getResourceName(), animal.getQuantityOfFoodEats(), animal.getMedication().getResourceName(), animal.getQuantityOfMedsRequired())).append("\n");
+                                    stringBuilder.append(String.format("%3s %20s %20s %20s %20s %20s %30s %20s", animal.getAnimalID(), animal.getAnimalName(), animal.getAnimalSpecies(), healthStatus, animal.getFood().getResourceName(), animal.getQuantityOfFoodEats(), animal.getMedication().getResourceName(), animal.getQuantityOfMedsRequired())).append("\n");
                                 }
 
                                 // Listing all of the current resources
@@ -304,13 +304,13 @@ public class Zoo {
                                 }
 
                                 // Writing the resources to a report format
-                                String resourceReportHeader = String.format("%3s %20s %20s %20s %20s", "ID", "Name", "Quantity", "Supplier", "Price");
+                                String resourceReportHeader = String.format("%3s %30s %20s %20s %20s", "ID", "Name", "Quantity", "Supplier", "Price");
                                 stringBuilder.append("\n\n").append("Resources:").append("\n");
                                 stringBuilder.append(resourceReportHeader).append("\n");
                                 stringBuilder.append("-".repeat(resourceReportHeader.length())).append("\n");
 
                                 for (Resource resource : resourceReportArrayList) {
-                                    stringBuilder.append(String.format("%3s %20s %20s %20s %20s", resource.getResourceID(), resource.getResourceName(), resource.getQuantityResource(), resource.getCompanyName(), "€" + resource.getResourcePrice())).append("\n");
+                                    stringBuilder.append(String.format("%3s %30s %20s %20s %20s", resource.getResourceID(), resource.getResourceName(), resource.getQuantityResource(), resource.getCompanyName(), "€" + resource.getResourcePrice())).append("\n");
                                 }
 
                                 // Writing the vet clinic animals to the report
@@ -331,6 +331,17 @@ public class Zoo {
 
                                 for (Animal animal : vetClinic.getSickAnimalList()) {
                                     stringBuilder.append(String.format("%3s %20s %20s", animal.getAnimalID(), animal.getAnimalName(), animal.getAnimalSpecies())).append("\n");
+                                }
+
+                                // Adding the vet callouts to the report
+                                stringBuilder.append("\n\n").append(String.format("%s %10s", "Vet Call-Outs", "Total: " + VetClinic.vetCalls.size())).append("\n");
+                                String vetCallOutHeader = String.format("%3s %20s", "ID", "Name");
+
+                                stringBuilder.append(vetCallOutHeader).append("\n");
+                                stringBuilder.append("-".repeat(vetCallOutHeader.length())).append("\n");
+
+                                for (Animal animal : VetClinic.vetCalls) {
+                                    stringBuilder.append(String.format("%3s %20s", animal.getAnimalID(), animal.getAnimalName())).append("\n");
                                 }
 
                                 // Writing report to the text file
