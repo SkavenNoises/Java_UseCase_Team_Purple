@@ -9,24 +9,24 @@ import java.util.Scanner;
 
 public class Zoo {
     public static void main(String[] args) {
-        // Zoo objects
-        ZooManager zooManager = new ZooManager();
-        zooManager.hireEmployee(new ZooEmployee());
-        zooManager.getEmployeeHashMap().get(1).addEnclosureToEmployee(new AnimalEnclosure("TigerPagoda", true, true, false, Animal.AnimalSpecies.Tiger));
-        zooManager.getEmployeeHashMap().get(1).getEmployeeEnclosures().get(0).addAnimal(new Animal("Bao", true, new Resource("Meat", 10.99, "Flesh'r'us", 10, Resource.ResourceType.Food), 1, new Resource("Tranquilisers", 8.99, "SandMan Co", 59, Resource.ResourceType.Meds), 1, Animal.AnimalSpecies.Tiger));
-        VetClinic vetClinic = new VetClinic();
-
         // Init scanner obj
         Scanner scanner = new Scanner(System.in);
 
         // App lifecycle
         boolean endLoop = false;
+
         while (!endLoop) {
+
             try {
+
                 // Display Menu
+
                 displayUserMenu();
 
+
+
                 // Holding the user selection
+
                 int userSelection = Integer.parseInt(scanner.next());
 
                 // Catching out of bounds selection
@@ -139,19 +139,56 @@ public class Zoo {
 
                         case 7: // TODO list all sick animals - zumrut
 
-                            break;
+                        var sickAnimalList = vc.getSickAnimalList();
+                        sickAnimalList.forEach(sickAnimal -> System.out.println(sickAnimal.getAnimalName()));
+
+                        //sickAnimalList.getSickAnimalList.displayAnimal();
+
+                        /*ArrayList<Animal> temp = vc.getSickAnimalList();
+
+                         for (Integer i = 0; i < temp.size(); i++) {
+
+                         //System.out.println("Animal: "+ temp.get(i).getAnimalName() + "..." + "|");
+
+                         System.out.println(temp.get(i));
+
+                        }*/
+                        break;
 
                         case 8: // TODO List all vet clinic history -zumrut
 
-                            break;
+                        HashMap<Animal.AnimalSpecies, Integer> hs = vc.getSickAnimalsIndex();
+
+                        for( Map.Entry<Animal.AnimalSpecies, Integer> entry : hs.entrySet() ){
+                            System.out.println( entry.getKey() + ": " + entry.getValue() );
+
+                        }
+                        break;
 
                         case 9: // TODO How many animals are in special care -zumrut
 
-                            break;
+                        ArrayList<Animal> specialCareList = vc.getSpecialCare();
 
-                        case 10: // TODO How many times the vet has been called per species -zumrut
+                        System.out.println("Count:" + specialCareList.size());
 
-                            break;
+                        break;
+
+                        case 10: // TODO How many times the vet has been called per species -
+
+                        var vetCallList = zooEmployee.GetVetCalls();
+
+                        HashMap<Animal.AnimalSpecies, Integer> vetCallsPerSpecies = new HashMap<>();
+
+                        vetCallList.forEach(animal -> {
+
+                            int count = vetCallsPerSpecies.getOrDefault(animal.getAnimalSpecies(), 0) + 1;
+
+                            vetCallsPerSpecies.put(animal.getAnimalSpecies(), count);
+
+                        });
+
+                        vetCallsPerSpecies.forEach((vetCalls,count) -> System.out.println("Species:"+ vetCalls.toString()+", Count:" + count));
+                        break;
 
                         case 11: // List all resources
                             // Finding all the resources for all the animals across all the enclosures
@@ -295,31 +332,59 @@ public class Zoo {
                     }
                 }
             } catch (NumberFormatException e) {
+
                 System.out.println("Please enter a valid selection");
+
             }
+
         }
+
     }
+
+
 
     public static void displayUserMenu() {
+
         String headerString = String.format("%20s", "Zoo UI");
+
         System.out.println("\n+" + "-".repeat(35) + "+");
+
         System.out.println(headerString);
+
         System.out.println("+" + "-".repeat(35) + "+");
 
+
+
         System.out.println(" 1) List all animals");
+
         System.out.println(" 2) Add an animal");
+
         System.out.println(" 3) Enclosure maintenance");
+
         System.out.println(" 4) List species consuming the most food");
+
         System.out.println(" 5) List species consuming the most meds");
+
         System.out.println(" 6) Send animal to vet clinic");
+
         System.out.println(" 7) List all sick animals");
+
         System.out.println(" 8) List vet clinic history");
+
         System.out.println(" 9) List animals in special care");
+
         System.out.println("10) List vet call outs");
+
         System.out.println("11) List resources");
+
         System.out.println("12) Print report");
+
         System.out.println(" 0) Quit");
 
+
+
         System.out.println("\nMake your selection:");
+
     }
+
 }

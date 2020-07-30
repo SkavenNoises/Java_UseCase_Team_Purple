@@ -11,6 +11,8 @@ public class ZooEmployee {
     private int employeeID;
     private boolean activeEmployee;
     private ArrayList<AnimalEnclosure> employeeEnclosures;
+    private ArrayList<Animal> vetCalls = new ArrayList<>();
+
 
     public static HashMap<Integer, ZooEmployee> zooEmployeeHash = new HashMap<>();
 
@@ -62,4 +64,18 @@ public class ZooEmployee {
     public ArrayList<AnimalEnclosure> getEmployeeEnclosures() {
         return employeeEnclosures;
     }
-}
+
+
+    //Vet Calls
+    public void AddVetCall(Animal animal){
+
+        this.vetCalls.add(animal);
+
+    }
+
+    public ArrayList<Animal> GetVetCalls(){
+
+        return this.vetCalls;}
+
+    }
+

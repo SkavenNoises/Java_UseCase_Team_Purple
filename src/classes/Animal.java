@@ -45,7 +45,7 @@ public class Animal {
         this.medication = null;
 
     }
-
+  
     public Animal(String animalName, boolean isHealthy, Resource food, int quantityOfFoodEats, Resource medication, int quantityOfMedsRequired, classes.Animal.AnimalSpecies animalSpecies) {
         animalStaticID++;
         this.animalID = animalStaticID;
