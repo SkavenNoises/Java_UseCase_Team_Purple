@@ -5,10 +5,31 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Zoo {
     public static void main(String[] args) {
+        // Dummy Objects
+        ZooManager zooManager = new ZooManager();
+        VetClinic vetClinic = new VetClinic();
+
+        zooManager.hireEmployee(new ZooEmployee());
+        zooManager.hireEmployee(new ZooEmployee());
+        zooManager.hireEmployee(new ZooEmployee());
+
+        zooManager.getEmployeeHashMap().get(1).addEnclosureToEmployee(new AnimalEnclosure("Panda Pagoda", true, true, false, Animal.AnimalSpecies.Panda));
+        zooManager.getEmployeeHashMap().get(2).addEnclosureToEmployee(new AnimalEnclosure("Bear Club", true, true, false, Animal.AnimalSpecies.Bear));
+        zooManager.getEmployeeHashMap().get(3).addEnclosureToEmployee(new AnimalEnclosure("Monkey Business", true, true, false, Animal.AnimalSpecies.Monkey));
+
+        zooManager.getEmployeeHashMap().get(1).getEmployeeEnclosures().get(0).addAnimal(new Animal("Po", true, new Resource("Bamboo", 20.99, "Twigs'r'us", 50, Resource.ResourceType.Food), 5, new Resource("Dexamethasone", 23.99, "Big Pharma", 23, Resource.ResourceType.Meds), 1, Animal.AnimalSpecies.Panda));
+        zooManager.getEmployeeHashMap().get(2).getEmployeeEnclosures().get(0).addAnimal(new Animal("Baloo", true, new Resource("Honey", 35.99, "The hive Co.", 83, Resource.ResourceType.Food), 5, new Resource("Prozac", 25.99, "Big Pharma", 50, Resource.ResourceType.Meds), 1, Animal.AnimalSpecies.Bear));
+        zooManager.getEmployeeHashMap().get(3).getEmployeeEnclosures().get(0).addAnimal(new Animal("Louis", true, new Resource("Bananas", 20.99, "Fruit Inc.", 42, Resource.ResourceType.Food), 3, new Resource("Citerizine Hydrochloride", 15.99, "Big Pharma", 17, Resource.ResourceType.Meds), 1, Animal.AnimalSpecies.Monkey));
+
+        zooManager.getEmployeeHashMap().get(1).AddVetCall(zooManager.getEmployeeHashMap().get(1).getEmployeeEnclosures().get(0).getAnimalListInEnclosure().get(0));
+        zooManager.getEmployeeHashMap().get(2).AddVetCall(zooManager.getEmployeeHashMap().get(2).getEmployeeEnclosures().get(0).getAnimalListInEnclosure().get(0));
+
         // Init scanner obj
         Scanner scanner = new Scanner(System.in);
 
@@ -16,17 +37,11 @@ public class Zoo {
         boolean endLoop = false;
 
         while (!endLoop) {
-
             try {
-
                 // Display Menu
-
                 displayUserMenu();
 
-
-
                 // Holding the user selection
-
                 int userSelection = Integer.parseInt(scanner.next());
 
                 // Catching out of bounds selection
@@ -41,23 +56,23 @@ public class Zoo {
                             endLoop = true;
                             break;
 
-                        case 1: // TODO list all animals - sinduri
+                        case 1: // List all the animals
                             Animal.printAllAnimals();
                             break;
 
-                        case 2: // TODO Add an animal - sinduri
+                        case 2: // Add a new animal
                             Animal.addNewAnimal();
                             break;
 
-                        case 3: // TODO Zoo employee maintaining the habit - sinduri
+                        case 3: // Zoo employee maintains the habitat
                             AnimalEnclosure.checkEnclosureMaintenance();
                             break;
 
-                        case 4: // TODO Which species is eating the most food - sinduri
+                        case 4: // Display which animal is eating the most food
                             Animal.averageExpensiveFood();
                             break;
 
-                        case 5: // TODO which species is using the most medication -sinduri
+                        case 5: // Display which animal is using the most meds
                             Animal.averageExpensiveMedicine();
                             break;
 
@@ -137,58 +152,58 @@ public class Zoo {
 
                             break;
 
-                        case 7: // TODO list all sick animals - zumrut
+                        case 7: // Displays all the sick animals
 
-                        var sickAnimalList = vc.getSickAnimalList();
-                        sickAnimalList.forEach(sickAnimal -> System.out.println(sickAnimal.getAnimalName()));
+                            var sickAnimalList = vetClinic.getSickAnimalList();
+                            sickAnimalList.forEach(sickAnimal -> System.out.println(sickAnimal.getAnimalName()));
 
-                        //sickAnimalList.getSickAnimalList.displayAnimal();
+                            //sickAnimalList.getSickAnimalList.displayAnimal();
 
-                        /*ArrayList<Animal> temp = vc.getSickAnimalList();
+                            /*ArrayList<Animal> temp = vc.getSickAnimalList();
 
-                         for (Integer i = 0; i < temp.size(); i++) {
+                             for (Integer i = 0; i < temp.size(); i++) {
 
-                         //System.out.println("Animal: "+ temp.get(i).getAnimalName() + "..." + "|");
+                             //System.out.println("Animal: "+ temp.get(i).getAnimalName() + "..." + "|");
 
-                         System.out.println(temp.get(i));
+                             System.out.println(temp.get(i));
 
-                        }*/
-                        break;
+                            }*/
+                            break;
 
-                        case 8: // TODO List all vet clinic history -zumrut
+                        case 8: // Lists the vet clinic's history
 
-                        HashMap<Animal.AnimalSpecies, Integer> hs = vc.getSickAnimalsIndex();
+                            HashMap<Animal.AnimalSpecies, Integer> hs = vetClinic.getSickAnimalsIndex();
 
-                        for( Map.Entry<Animal.AnimalSpecies, Integer> entry : hs.entrySet() ){
-                            System.out.println( entry.getKey() + ": " + entry.getValue() );
+                            for( Map.Entry<Animal.AnimalSpecies, Integer> entry : hs.entrySet() ){
+                                System.out.println( entry.getKey() + ": " + entry.getValue() );
 
-                        }
-                        break;
+                            }
+                            break;
 
-                        case 9: // TODO How many animals are in special care -zumrut
+                        case 9: // Displays how many animals are in special care
 
-                        ArrayList<Animal> specialCareList = vc.getSpecialCare();
+                            ArrayList<Animal> specialCareList = vetClinic.getSpecialCare();
 
-                        System.out.println("Count:" + specialCareList.size());
+                            System.out.println("Count:" + specialCareList.size());
 
-                        break;
+                            break;
 
-                        case 10: // TODO How many times the vet has been called per species -
+                        case 10: // How many times vet has been called per species -
+                            var vetCallList = VetClinic.vetCalls;
 
-                        var vetCallList = zooEmployee.GetVetCalls();
+                            HashMap<Animal.AnimalSpecies, Integer> vetCallsPerSpecies = new HashMap<>();
 
-                        HashMap<Animal.AnimalSpecies, Integer> vetCallsPerSpecies = new HashMap<>();
+                            vetCallList.forEach(animal -> {
 
-                        vetCallList.forEach(animal -> {
+                                int count = vetCallsPerSpecies.getOrDefault(animal.getAnimalSpecies(), 0) + 1;
 
-                            int count = vetCallsPerSpecies.getOrDefault(animal.getAnimalSpecies(), 0) + 1;
+                                vetCallsPerSpecies.put(animal.getAnimalSpecies(), count);
 
-                            vetCallsPerSpecies.put(animal.getAnimalSpecies(), count);
+                            });
 
-                        });
+                            vetCallsPerSpecies.forEach((vetCalls,count) -> System.out.println("Species:"+ vetCalls.toString()+", Count:" + count));
 
-                        vetCallsPerSpecies.forEach((vetCalls,count) -> System.out.println("Species:"+ vetCalls.toString()+", Count:" + count));
-                        break;
+                            break;
 
                         case 11: // List all resources
                             // Finding all the resources for all the animals across all the enclosures

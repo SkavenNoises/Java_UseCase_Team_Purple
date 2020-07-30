@@ -11,8 +11,6 @@ public class ZooEmployee {
     private int employeeID;
     private boolean activeEmployee;
     private ArrayList<AnimalEnclosure> employeeEnclosures;
-    private ArrayList<Animal> vetCalls = new ArrayList<>();
-
 
     public static HashMap<Integer, ZooEmployee> zooEmployeeHash = new HashMap<>();
 
@@ -29,9 +27,6 @@ public class ZooEmployee {
         boolean animalFound = false;
         for (Animal animal : employeeEnclosures.get(0).getAnimalListInEnclosure()) {
             if (animal.getAnimalID() == animalID) {
-                // TODO - add animal to the vetClinic
-
-
                 // Removing the animal from the enclosure
                 employeeEnclosures.get(0).removeAnimal(animalID);
 
@@ -65,17 +60,9 @@ public class ZooEmployee {
         return employeeEnclosures;
     }
 
-
     //Vet Calls
-    public void AddVetCall(Animal animal){
-
-        this.vetCalls.add(animal);
-
+    public void AddVetCall(Animal animal) {
+        VetClinic.vetCalls.add(animal);
     }
-
-    public ArrayList<Animal> GetVetCalls(){
-
-        return this.vetCalls;}
-
-    }
+}
 

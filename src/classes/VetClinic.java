@@ -7,30 +7,28 @@ import java.util.*;
 
 
 public class VetClinic {
-
-
-
     private ArrayList<Animal> sickAnimalList = new ArrayList<>();
-
     private ArrayList<Animal> specialCare = new ArrayList<>();
-
-
-
-    //HashMap<Animal.AnimalSpecies, Integer> index
-
-    public VetClinic(ArrayList<Animal> sickAnimalList, ArrayList<Animal> specialCare) {
-
-        this.sickAnimalList = sickAnimalList;
-
-        this.specialCare = specialCare;
-
-    }
-
-
+    public static ArrayList<Animal> vetCalls = new ArrayList<>();
 
 //SickAnimal Size/Add/Remove/List
 
 
+    public void setSickAnimalList(ArrayList<Animal> sickAnimalList) {
+        this.sickAnimalList = sickAnimalList;
+    }
+
+    public void setSpecialCare(ArrayList<Animal> specialCare) {
+        this.specialCare = specialCare;
+    }
+
+    public ArrayList<Animal> getVetCalls() {
+        return vetCalls;
+    }
+
+    public void setVetCalls(ArrayList<Animal> vetCalls) {
+        this.vetCalls = vetCalls;
+    }
 
     public int getAmountOfSickAnimal() {
 
