@@ -10,7 +10,8 @@ public class ZooEmployee {
     private int employeeID;
     private boolean activeEmployee;
     private ArrayList<AnimalEnclosure> employeeEnclosures;
-    private ArrayList<Animal> vetCalls;
+    private ArrayList<Animal> vetCalls = new ArrayList<>();
+
 
     public ZooEmployee() {
         employeeIDCounter++;
