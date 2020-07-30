@@ -1,5 +1,7 @@
 package classes;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +15,12 @@ public class AnimalEnclosure {
     private boolean isEnriched;
     private boolean needsModifications;
     private Animal.AnimalSpecies enclosureSpecies;
+    //Log of time cleaned and the Employee
+    private HashMap<LocalDateTime, ZooEmployee> cleanEnclosure = new HashMap<>();
+    //Log of time enriched and the Employee
+    private HashMap<LocalDateTime, ZooEmployee> enrichEnclosure = new HashMap<>();
+    //Log of time modified and the Employee
+    private HashMap<LocalDateTime, ZooEmployee> modifyEnclosure = new HashMap<>();
 
     static HashMap<Integer, AnimalEnclosure> enclosureHash = new HashMap<>();
 
@@ -29,6 +37,19 @@ public class AnimalEnclosure {
 
     public Animal.AnimalSpecies getEnclosureSpecies() {
         return enclosureSpecies;
+    }
+
+    public boolean hasAnimal(Animal animal) {
+        boolean containsAnimal = false;
+
+        for (Animal a : this.animalListInEnclosure) {
+            if (a.getAnimalID() == animal.getAnimalID()) {
+                containsAnimal = true;
+                break;
+            }
+        }
+
+        return containsAnimal;
     }
 
     public int getEnclosureID() {
@@ -79,6 +100,30 @@ public class AnimalEnclosure {
         this.animalListInEnclosure = animalListInEnclosure;
     }
 
+    public HashMap<LocalDateTime, ZooEmployee> getCleanEnclosure() {
+        return cleanEnclosure;
+    }
+
+    public void setCleanEnclosure(HashMap<LocalDateTime, ZooEmployee> cleanEnclosure) {
+        this.cleanEnclosure = cleanEnclosure;
+    }
+
+    public HashMap<LocalDateTime, ZooEmployee> getEnrichEnclosure() {
+        return enrichEnclosure;
+    }
+
+    public void setEnrichEnclosure(HashMap<LocalDateTime, ZooEmployee> enrichEnclosure) {
+        this.enrichEnclosure = enrichEnclosure;
+    }
+
+    public HashMap<LocalDateTime, ZooEmployee> getModifyEnclosure() {
+        return modifyEnclosure;
+    }
+
+    public void setModifyEnclosure(HashMap<LocalDateTime, ZooEmployee> modifyEnclosure) {
+        this.modifyEnclosure = modifyEnclosure;
+    }
+
     public void removeAnimal(int animalId) {
         if(this.getAnimalListInEnclosure().contains(Animal.animalsHash.get(animalId))) {
             this.getAnimalListInEnclosure().remove(Animal.animalsHash.get(animalId));
@@ -87,8 +132,8 @@ public class AnimalEnclosure {
         }
     }
 
-    public void addAnimal(int animalId) {
-        this.getAnimalListInEnclosure().add(Animal.animalsHash.get(animalId));
+    public void addAnimal(Animal animal) {
+        this.getAnimalListInEnclosure().add(animal);
         System.out.println("Animal Added");
     }
 
@@ -113,6 +158,71 @@ public class AnimalEnclosure {
                         animal.getAnimalSpecies());
             }
 
+        }
+    }
+
+    public void recordModifications(LocalDateTime dateTimeRecord, int zooEmployeeId) {
+        if (ZooEmployee.zooEmployeeHash.containsKey(zooEmployeeId)) {
+            this.getModifyEnclosure().put(dateTimeRecord, ZooEmployee.zooEmployeeHash.get(zooEmployeeId));
+            this.setNeedsModifications(false);
+        } else {
+            System.out.println("No such employee exists!");
+        }
+    }
+
+    public void recordEnriching(LocalDateTime dateTimeRecord, int zooEmployeeId) {
+        if (ZooEmployee.zooEmployeeHash.containsKey(zooEmployeeId)) {
+            this.getEnrichEnclosure().put(dateTimeRecord, ZooEmployee.zooEmployeeHash.get(zooEmployeeId));
+            this.setEnriched(true);
+
+        } else {
+            System.out.println("No such employee exists!");
+        }
+    }
+
+    public void recordCleaning(LocalDateTime dateTimeRecord, int zooEmployeeId) {
+        if (ZooEmployee.zooEmployeeHash.containsKey(zooEmployeeId)) {
+            this.getCleanEnclosure().put(dateTimeRecord, ZooEmployee.zooEmployeeHash.get(zooEmployeeId));
+            this.setClean(true);
+
+        } else {
+            System.out.println("No such employee exists!");
+        }
+    }
+
+    public static void checkEnclosureMaintenance() {
+        System.out.printf("%n%n%-15s %-32s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s",
+                "Enclosure ID", "Name", "Species", "isClean", "Last Cleaned", "byEmployeeID", "isEnriched", "Last Enriched", "byEmployeeID", "Needs Modifications", "Last Modified", "byEmployeeID" );
+        for(Map.Entry<Integer, AnimalEnclosure> entry : enclosureHash.entrySet()) {
+            LocalDateTime cleanTime = null;
+            ZooEmployee cleanEmployee = null;
+            for(Map.Entry<LocalDateTime, ZooEmployee> entryClean : entry.getValue().getCleanEnclosure().entrySet()) {
+                cleanTime = entryClean.getKey();
+                cleanEmployee = entryClean.getValue();
+            }
+            LocalDateTime enrichTime = null;
+            ZooEmployee enrichEmployee = null;
+            for(Map.Entry<LocalDateTime, ZooEmployee> entryEnrich : entry.getValue().getEnrichEnclosure().entrySet()) {
+                enrichTime = entryEnrich.getKey();
+                enrichEmployee = entryEnrich.getValue();
+            }
+            LocalDateTime modifyTime = null;
+            ZooEmployee modifyEmployee = null;
+            for(Map.Entry<LocalDateTime, ZooEmployee> entryModify : entry.getValue().getModifyEnclosure().entrySet()) {
+                modifyTime = entryModify.getKey();
+                modifyEmployee = entryModify.getValue();
+            }
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+            System.out.printf("%n%-15d %-32s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s",
+                    entry.getValue().getEnclosureID(), entry.getValue().getEnclosureName(),
+                    entry.getValue().getEnclosureSpecies(),
+                    (entry.getValue().isClean() ? "Yes" : "No"),
+                    cleanTime == null ? "Not cleaned" : cleanTime.format(dateFormatter), cleanEmployee == null ? "None" : cleanEmployee.getEmployeeID(),
+                    (entry.getValue().isEnriched() ? "Yes" : "No"),
+                    enrichTime == null ? "Not enriched" : enrichTime.format(dateFormatter), enrichEmployee == null ? "None" : enrichEmployee.getEmployeeID(),
+                    (entry.getValue().isNeedsModifications() ? "Yes" : "No"),
+                    modifyTime == null ? "Not modified" : modifyTime.format(dateFormatter), modifyEmployee == null ? "None" : modifyEmployee.getEmployeeID());
         }
     }
 

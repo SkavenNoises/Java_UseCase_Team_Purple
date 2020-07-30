@@ -1,0 +1,31 @@
+               Zoo Report
+---------------------------------------------
+
+Employees:
+---------------------------------------------
+ ID             Employed            Enclosure
+---------------------------------------------
+  1                Hired          TigerPagoda
+
+
+Animal List:
+ ID                 Name              Species               Health                 Food           perServing                 Meds           perServing
+------------------------------------------------------------------------------------------------------------------------------------------------------
+  1                  Bao                Tiger              Healthy                 Meat                    1        Tranquilisers                    1
+
+
+Resources:
+ ID                 Name             Quantity             Supplier                Price
+---------------------------------------------------------------------------------------
+  1                 Meat                   10           Flesh'r'us               €10.99
+  2        Tranquilisers                   59           SandMan Co                €8.99
+
+
+Vet Clinic:
+ ID                 Name              Species
+---------------------------------------------
+
+
+Vet Clinic - Special Care:
+ ID                 Name              Species
+---------------------------------------------
