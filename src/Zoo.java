@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import static classes.AnimalEnclosure.enclosureHash;
+
 public class Zoo {
     public static void main(String[] args) {
         // Dummy Objects
@@ -25,7 +27,7 @@ public class Zoo {
 
         zooManager.getEmployeeHashMap().get(1).getEmployeeEnclosures().get(0).addAnimal(new Animal("Po", true, new Resource("Bamboo", 20.99, "Twigs'r'us", 50, Resource.ResourceType.Food), 5, new Resource("Dexamethasone", 23.99, "Big Pharma", 23, Resource.ResourceType.Meds), 1, Animal.AnimalSpecies.Panda));
         zooManager.getEmployeeHashMap().get(2).getEmployeeEnclosures().get(0).addAnimal(new Animal("Baloo", true, new Resource("Honey", 35.99, "The hive Co.", 83, Resource.ResourceType.Food), 5, new Resource("Prozac", 25.99, "Big Pharma", 50, Resource.ResourceType.Meds), 1, Animal.AnimalSpecies.Bear));
-        zooManager.getEmployeeHashMap().get(3).getEmployeeEnclosures().get(0).addAnimal(new Animal("Louis", true, new Resource("Bananas", 20.99, "Fruit Inc.", 42, Resource.ResourceType.Food), 3, new Resource("Citerizine Hydrochloride", 15.99, "Big Pharma", 17, Resource.ResourceType.Meds), 1, Animal.AnimalSpecies.Monkey));
+        zooManager.getEmployeeHashMap().get(3).getEmployeeEnclosures().get(0).addAnimal(new Animal("Louis", true, new Resource("Bananas", 20.99, "Fruit Inc.", 42, Resource.ResourceType.Food), 3, new Resource("Cetirizine Hydrochloride", 15.99, "Big Pharma", 17, Resource.ResourceType.Meds), 1, Animal.AnimalSpecies.Monkey));
 
         zooManager.getEmployeeHashMap().get(1).AddVetCall(zooManager.getEmployeeHashMap().get(1).getEmployeeEnclosures().get(0).getAnimalListInEnclosure().get(0));
         zooManager.getEmployeeHashMap().get(2).AddVetCall(zooManager.getEmployeeHashMap().get(2).getEmployeeEnclosures().get(0).getAnimalListInEnclosure().get(0));
@@ -57,7 +59,32 @@ public class Zoo {
                             break;
 
                         case 1: // List all the animals
-                            Animal.printAllAnimals();
+                            System.out.printf("%n%-10s %-32s %-20s %-32s %-15s %-32s %-15s %-32s %-32s",
+                                    "AnimalID", "AnimalName", "isHealthy", "Food", "Quantity", "Medicine", "Quantity", "Species", "Location");
+                            for (Map.Entry<Integer, Animal> entry : Animal.animalsHash.entrySet()) {
+                                String animalLocation = null;
+                                for (Map.Entry<Integer, AnimalEnclosure> entryEnclosure : enclosureHash.entrySet()) {
+                                    if (entryEnclosure.getValue().getAnimalListInEnclosure().contains(entry.getValue())) {
+                                        animalLocation = "Enclosure: " + entryEnclosure.getValue().getEnclosureName();
+                                    }
+                                }
+
+                                if (vetClinic.getSickAnimalList().contains(entry.getValue())) {
+                                    animalLocation = "Vet Clinic Sick Ward";
+                                }
+
+                                if (vetClinic.getSpecialCare().contains(entry.getValue())) {
+                                    animalLocation = "Vet Clinic Special Care Ward";
+                                }
+
+                                System.out.printf("%n%-10d %-32s %-20s %-32s %-15s %-32s %-15s %-32s %-32s",
+                                        entry.getKey(), entry.getValue().getAnimalName(),
+                                        entry.getValue().isHealthy() ? "Healthy" : "Not Healthy",
+                                        entry.getValue().getFood().getResourceName(), entry.getValue().getQuantityOfFoodEats(),
+                                        (entry.getValue().getMedication() == null) ? "None" : entry.getValue().getMedication().getResourceName(),
+                                        (entry.getValue().getQuantityOfMedsRequired() == 0) ? "None" : entry.getValue().getQuantityOfMedsRequired(),
+                                        entry.getValue().getAnimalSpecies(), animalLocation);
+                            }
                             break;
 
                         case 2: // Add a new animal
@@ -174,8 +201,8 @@ public class Zoo {
 
                             HashMap<Animal.AnimalSpecies, Integer> hs = vetClinic.getSickAnimalsIndex();
 
-                            for( Map.Entry<Animal.AnimalSpecies, Integer> entry : hs.entrySet() ){
-                                System.out.println( entry.getKey() + ": " + entry.getValue() );
+                            for (Map.Entry<Animal.AnimalSpecies, Integer> entry : hs.entrySet()) {
+                                System.out.println(entry.getKey() + ": " + entry.getValue());
 
                             }
                             break;
@@ -201,7 +228,7 @@ public class Zoo {
 
                             });
 
-                            vetCallsPerSpecies.forEach((vetCalls,count) -> System.out.println("Species:"+ vetCalls.toString()+", Count:" + count));
+                            vetCallsPerSpecies.forEach((vetCalls, count) -> System.out.println("Species:" + vetCalls.toString() + ", Count:" + count));
 
                             break;
 
@@ -357,7 +384,6 @@ public class Zoo {
     }
 
 
-
     public static void displayUserMenu() {
 
         String headerString = String.format("%20s", "Zoo UI");
@@ -367,7 +393,6 @@ public class Zoo {
         System.out.println(headerString);
 
         System.out.println("+" + "-".repeat(35) + "+");
-
 
 
         System.out.println(" 1) List all animals");
@@ -397,9 +422,9 @@ public class Zoo {
         System.out.println(" 0) Quit");
 
 
-
         System.out.println("\nMake your selection:");
 
     }
+
 
 }

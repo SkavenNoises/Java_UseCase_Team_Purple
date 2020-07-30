@@ -22,7 +22,7 @@ public class AnimalEnclosure {
     //Log of time modified and the Employee
     private HashMap<LocalDateTime, ZooEmployee> modifyEnclosure = new HashMap<>();
 
-    static HashMap<Integer, AnimalEnclosure> enclosureHash = new HashMap<>();
+    public static HashMap<Integer, AnimalEnclosure> enclosureHash = new HashMap<>();
 
     public AnimalEnclosure(String enclosureName, boolean isClean, boolean isEnriched, boolean needsModifications, Animal.AnimalSpecies animalSpecies) {
         enclosureStaticID++;
