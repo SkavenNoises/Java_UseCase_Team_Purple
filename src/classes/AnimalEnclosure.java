@@ -134,7 +134,7 @@ public class AnimalEnclosure {
 
     public void addAnimal(Animal animal) {
         this.getAnimalListInEnclosure().add(animal);
-        System.out.println("Animal Added");
+        //System.out.println("Animal Added");
     }
 
     public static void printAnimalEnclosureRecords() {

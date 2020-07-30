@@ -15,7 +15,7 @@ Animal List:
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
   1                   Po                Panda              Healthy               Bamboo                    5                  Dexamethasone                    1
   2                Baloo                 Bear              Healthy                Honey                    5                         Prozac                    1
-  3                Louis               Monkey              Healthy              Bananas                    3       Citerizine Hydrochloride                    1
+  3                Louis               Monkey              Healthy              Bananas                    3       Cetirizine Hydrochloride                    1
 
 
 Resources:
@@ -26,17 +26,21 @@ Resources:
   3                          Honey                   83         The hive Co.               €35.99
   4                         Prozac                   50           Big Pharma               €25.99
   5                        Bananas                   42           Fruit Inc.               €20.99
-  6       Citerizine Hydrochloride                   17           Big Pharma               €15.99
+  6       Cetirizine Hydrochloride                   17           Big Pharma               €15.99
 
 
 Vet Clinic:
  ID                 Name              Species
 ---------------------------------------------
+  5                Derek                 Bear
+  6                 Jack               Monkey
 
 
 Vet Clinic - Special Care:
  ID                 Name              Species
 ---------------------------------------------
+  5                Derek                 Bear
+  6                 Jack               Monkey
 
 
 Vet Call-Outs   Total: 2

@@ -4,7 +4,6 @@ import exceptions.AnimalNotFoundException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.Format;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +31,8 @@ public class Zoo {
 
         zooManager.getEmployeeHashMap().get(1).AddVetCall(zooManager.getEmployeeHashMap().get(1).getEmployeeEnclosures().get(0).getAnimalListInEnclosure().get(0));
         zooManager.getEmployeeHashMap().get(2).AddVetCall(zooManager.getEmployeeHashMap().get(2).getEmployeeEnclosures().get(0).getAnimalListInEnclosure().get(0));
+
+        vetClinic.addSpecialCare(new Animal("Coughing George", false, new Resource("Apples", 4.99, "Fruit Inc", 20, Resource.ResourceType.Food), 20, new Resource("Steroids", 20.98, "Big Pharma", 29, Resource.ResourceType.Meds), 2,  Animal.AnimalSpecies.Monkey));
 
         var derek = new Animal("Derek", false, new Resource("Vegetarian", 10.99, "XYZ AB",
 
@@ -212,11 +213,11 @@ public class Zoo {
 
                         case 8: // Lists the vet clinic's history
 
+                            System.out.println("Vet Clinic History: ");
+
                             HashMap<Animal.AnimalSpecies, Integer> hs = vetClinic.getSickAnimalsIndex();
 
                             for (Map.Entry<Animal.AnimalSpecies, Integer> entry : hs.entrySet()) {
-                                System.out.println(entry.getKey() + ": " + entry.getValue());
-
                                 System.out.println(entry.getKey() + ": " + entry.getValue());
                             }
                             break;
@@ -225,7 +226,7 @@ public class Zoo {
 
                             ArrayList<Animal> specialCareList = vetClinic.getSpecialCare();
 
-                            System.out.println("Number of Animals in Special Care:" + specialCareList.size());
+                            System.out.println("Number of Animals in Special Care: " + specialCareList.size());
 
                             break;
 
@@ -242,7 +243,7 @@ public class Zoo {
 
                             });
 
-                            vetCallsPerSpecies.forEach((vetCalls, count) -> System.out.println("Species:" + vetCalls.toString() + ", Count:" + count));
+                            vetCallsPerSpecies.forEach((vetCalls, count) -> System.out.println("Species: " + vetCalls.toString() + ", Count: " + count));
 
                             break;
 
@@ -260,13 +261,13 @@ public class Zoo {
 
                             // Printout header
                             System.out.println("\nALL animal(s) in Zoo:");
-                            String resourceHeader = String.format("%3s %20s %20s %20s %20s %20s", "ID", "Name", "Quantity", "Type", "Provider", "Price");
+                            String resourceHeader = String.format("%3s %30s %20s %20s %20s %20s", "ID", "Name", "Quantity", "Type", "Provider", "Price");
                             System.out.println(resourceHeader);
                             System.out.println("-".repeat(resourceHeader.length()));
 
                             // Filling the table up with all the animals
                             for (Resource resource : resourceArrayList) {
-                                System.out.println(String.format("%3s %20s %20s %20s %20s %20s", resource.getResourceID(), resource.getResourceName(), resource.getQuantityResource(), resource.getResourceType(), resource.getCompanyName(), "€" + resource.getResourcePrice()));
+                                System.out.println(String.format("%3s %30s %20s %20s %20s %20s", resource.getResourceID(), resource.getResourceName(), resource.getQuantityResource(), resource.getResourceType(), resource.getCompanyName(), "€" + resource.getResourcePrice()));
                             }
 
                             break;
